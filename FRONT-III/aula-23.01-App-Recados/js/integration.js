@@ -1,31 +1,15 @@
 const axiosClient = axios.create({
-    baseURL: 'https://api-recados-growdev-6f4s.onrender.com',
+    baseURL: 'https://api-recados-growdev-6f4s.onrender.com'
 });
 
+// Login usuário
 
-async function signup(email, password) {
-    try {
-        const response = await axiosClient.post('/signup', {
-            email: email,
-            password: password
-        });
+// Cadastro usuário
 
-        return response.data;
-    } catch (error) {
-        return error.response.data;
-    }
-}
+// Listagem de recados
 
+// Cadastro de recados
 
-async function signin(email, password) {
-    try {
-        const response = await axiosClient.post('/signin', {
-            email: email,
-            password: password
-        });
+// Atualização de recados
 
-        return response.data;
-    } catch (error) {
-        return error.response.data;
-    }
-}
+// Exclusão de recados

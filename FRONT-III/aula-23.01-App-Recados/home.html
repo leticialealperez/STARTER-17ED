@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS BS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <!--ICONS BS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- MEU STYLE -->
+    <link rel="stylesheet" href="./styles/styles.css">
+
+    <title>Bootstrap - App Recados</title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary py-2 px-1">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/home.html">
+                    <img src="./assets/images/logo_growdev.png" alt="Bootstrap" width="150">
+                </a>
+
+                <div class="row align-items-center">
+                    <div class="dropdown">
+                        <button class="btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class="bi bi-person-circle fs-3"></i>
+                        </button>
+                        <ul class="dropdown-menu logout" aria-labelledby="dropdownMenuButton1">
+                            <li>
+                                <button class="dropdown-item border-0" id="btn-logout">
+                                    Sair
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container-fluid my-5 pb-4">
+        <section class="container mb-4">
+            <h1 class="text-center">Meus Recados</h1>
+            <hr>
+        </section>
+
+        <section class="container">
+            <div class="row gy-4">
+
+                <!-- CARD -->
+                <div class="col-12 col-lg-6">
+                    <div class="card">
+                        <h5 class="card-header">Titulo #1</h5>
+                        <div class="card-body">
+                            <p class="card-text">
+                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Non officiis enim animi
+                                tempore beatae, excepturi reprehenderit fugit atque, voluptates iste labore, corrupti
+                                maxime perspiciatis in aut? Exercitationem nesciunt quaerat officiis.
+                                Adipisci ipsa sit, quod est tempore,
+                            </p>
+
+                            <button class="btn btn-success" data-bs-toggle="modal"
+                                data-bs-target="#modal-atualizar-recado">
+                                <i class="bi bi-pencil-square"></i>
+                                Editar
+                            </button>
+
+                            <button class="btn btn-danger" data-bs-toggle="modal"
+                                data-bs-target="#modal-excluir-recado">
+                                <i class="bi bi-trash"></i>
+                                Excluir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD -->
+                <div class="col-12 col-lg-6">
+                    <div class="card">
+                        <h5 class="card-header">Titulo #2</h5>
+                        <div class="card-body">
+                            <p class="card-text">
+                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Non officiis enim animi
+                                tempore beatae, excepturi reprehenderit fugit atque, voluptates iste labore, corrupti
+                                maxime perspiciatis in aut? Exercitationem nesciunt quaerat officiis.
+                                Adipisci ipsa sit, quod est tempore, voluptas asperiores ullam harum ducimus temporibus
+                                assumenda amet culpa, aut dolorem tempora praesentium perferendis.
+                            </p>
+
+                            <button href="#" class="btn btn-success">
+                                <i class="bi bi-pencil-square"></i>
+                                Editar
+                            </button>
+
+                            <button href="#" class="btn btn-danger">
+                                <i class="bi bi-trash"></i>
+                                Excluir
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD -->
+                <div class="col-12 col-lg-6">
+                    <div class="card">
+                        <h5 class="card-header">Titulo #3</h5>
+                        <div class="card-body">
+                            <p class="card-text">
+                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Non officiis enim animi
+                                tempore beatae, excepturi reprehenderit fugit atque, voluptates iste labore, corrupti
+                                maxime perspiciatis in aut? Exercitationem nesciunt quaerat officiis.
+                                Adipisci ipsa sit, quod est tempore, voluptas asperiores ullam harum ducimus temporibus
+                                assumenda amet culpa, aut dolorem tempora praesentium perferendis. Distinctio dolorum
+                                corrupti deleniti laborum quo aperiam mollitia quidem sed!
+                            </p>
+
+                            <button href="#" class="btn btn-success">
+                                <i class="bi bi-pencil-square"></i>
+                                Editar
+                            </button>
+
+                            <button href="#" class="btn btn-danger">
+                                <i class="bi bi-trash"></i>
+                                Excluir
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD -->
+                <div class="col-12 col-lg-6">
+                    <div class="card">
+                        <h5 class="card-header">Titulo #4</h5>
+                        <div class="card-body">
+                            <p class="card-text">
+                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Non officiis enim animi
+                                tempore beatae, excepturi reprehenderit fugit atque, voluptates iste labore, corrupti
+                                maxime perspiciatis in aut? Exercitationem nesciunt quaerat officiis.
+                                Adipisci ipsa sit, quod est tempore, voluptas asperiores ullam harum ducimus temporibus
+                                assumenda amet culpa, aut dolorem tempora praesentium perferendis. Distinctio dolorum
+                                corrupti deleniti laborum quo aperiam mollitia quidem sed!
+                            </p>
+
+                            <button href="#" class="btn btn-success">
+                                <i class="bi bi-pencil-square"></i>
+                                Editar
+                            </button>
+
+                            <button href="#" class="btn btn-danger">
+                                <i class="bi bi-trash"></i>
+                                Excluir
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD -->
+                <div class="col-12 col-lg-6">
+                    <div class="card">
+                        <h5 class="card-header">Titulo #5</h5>
+                        <div class="card-body">
+                            <p class="card-text">
+                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Non officiis enim animi
+                                tempore beatae, excepturi reprehenderit fugit atque, voluptates iste labore, corrupti
+                                maxime perspiciatis in aut? Exercitationem nesciunt quaerat officiis.
+                                Adipisci ipsa sit, quod est tempore, voluptas asperiores ullam harum ducimus temporibus
+                                assumenda amet culpa, aut dolorem tempora praesentium perferendis. Distinctio dolorum
+                                corrupti deleniti laborum quo aperiam mollitia quidem sed!
+                            </p>
+
+                            <button href="#" class="btn btn-success">
+                                <i class="bi bi-pencil-square"></i>
+                                Editar
+                            </button>
+
+                            <button href="#" class="btn btn-danger">
+                                <i class="bi bi-trash"></i>
+                                Excluir
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD -->
+                <div class="col-12 col-lg-6">
+                    <div class="card">
+                        <h5 class="card-header">Titulo #6</h5>
+                        <div class="card-body">
+                            <p class="card-text">
+                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Non officiis enim animi
+                                tempore beatae, excepturi reprehenderit fugit atque, voluptates iste labore, corrupti
+                                maxime perspiciatis in aut? Exercitationem nesciunt quaerat officiis.
+                                Adipisci ipsa sit, quod est tempore, voluptas asperiores ullam harum ducimus temporibus
+                                assumenda amet culpa, aut dolorem tempora praesentium perferendis. Distinctio dolorum
+                                corrupti deleniti laborum quo aperiam mollitia quidem sed!
+                            </p>
+
+                            <button href="#" class="btn btn-success">
+                                <i class="bi bi-pencil-square"></i>
+                                Editar
+                            </button>
+
+                            <button href="#" class="btn btn-danger">
+                                <i class="bi bi-trash"></i>
+                                Excluir
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+
+    <!-- BOTÃO ADICIONAR -->
+    <button class="btn btn-primary rounded-circle position-fixed button-float" data-bs-toggle="modal"
+        data-bs-target="#modal-add-recado">
+        <i class="bi bi-plus fs-3"></i>
+    </button>
+
+    <!-- BOTÃO VOLTAR AO TOPO -->
+    <div class="container-fluid position-fixed voltar-topo">
+        <div class="row">
+            <div class="col text-center">
+                <button class="btn btn-primary" id="btn-voltar-topo">
+                    <i class="bi bi-arrow-up"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ADICIONAR -->
+    <div class="modal fade" id="modal-add-recado" tabindex="-1" aria-labelledby="modal-add-recado" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modal-add-recado">Novo Recado</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="form-cadastro-recado">
+                    <input type="hidden" name="id-recado-atualizar" name="id-recado-atualizar" value="">
+
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="descricao-novo-recado" class="col-form-label">Descrição:</label>
+                            <input type="text" class="form-control" id="descricao-novo-recado"
+                                name="descricao-novo-recado" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="detalhamento-novo-recado" class="col-form-label">Detalhamento:</label>
+                            <textarea class="form-control" id="detalhamento-novo-recado" name="detalhamento-novo-recado"
+                                required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" id="btn-cadastro-recado">Cadastrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ATUALIZAR -->
+    <div class="modal fade" id="modal-atualizar-recado" tabindex="-1" aria-labelledby="modal-atualizar-recado"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modal-atualizar-recado">Atualizar Recado</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="form-atualizar-recado">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="descricao-atualizar-recado" class="col-form-label">Descrição:</label>
+                            <input type="text" class="form-control" id="descricao-atualizar-recado"
+                                name="descricao-atualizar-recado" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="detalhamento-atualizar-recado" class="col-form-label">Detalhamento:</label>
+                            <textarea class="form-control" id="detalhamento-atualizar-recado"
+                                name="detalhamento-atualizar-recado" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" id="btn-atualizao-recado">Cadastrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL EXCLUIR -->
+    <div class="modal fade" id="modal-excluir-recado" tabindex="-1" aria-labelledby="modal-excluir-recado" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modal-excluir-recado">Excluir Recado</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Essa ação é irreversível. Tem certeza que deseja realizar a exclusão do recado?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btn-exclusao-recado">Excluir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- JS BS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+    <!-- JS AXIOS -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <!-- MEUS JS -->
+    <script src="./js/integration.js"></script>
+    <script src="./js/utilities.js"></script>
+    <script src="./js/home.js"></script>
+</body>
+
+</html>

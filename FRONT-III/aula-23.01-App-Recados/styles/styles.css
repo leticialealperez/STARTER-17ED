@@ -8,5 +8,31 @@
     right: 24px;
 }
 
+.dropdown-menu[data-bs-popper] {
+    top: 100%;
+    left: auto;
+    right: 0 !important;
+    margin-top: var(--bs-dropdown-spacer);
+}
+
+.logout{
+    min-width: 5rem !important;
+}
+
+.btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active #btn-logout{
+    border-color: transparent;
+}
+
+.button-float{
+    height: 60px;
+    width: 60px;
+    bottom: 24px;
+    right: 24px;
+    z-index: 1000;
+}
+
+.voltar-topo {
+    bottom: 12px;
+}
 
 

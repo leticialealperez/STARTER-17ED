@@ -1,7 +1,6 @@
 const modalCadastrar = new bootstrap.Modal('#modalCadastrar');
 
-const formularioCadastro = document.getElementById('form-cadastro');
-formularioCadastro.addEventListener('submit', async (evento) => {
+document.getElementById('form-cadastro').addEventListener('submit', async (evento) => {
     evento.preventDefault();
 
     if (!evento.target.checkValidity()) {
@@ -16,25 +15,26 @@ formularioCadastro.addEventListener('submit', async (evento) => {
     }
 
     // antes de disparar a requisição
-    feedbackSignup('Carregando... Aguarde!', 'info', 'bi-arrow-repeat');
+    loading(true, 'cadastro-usuario');
 
-    const respostaAPI = await signup(dados.email, dados.password);
+    setTimeout(() => {
+        loading(false, 'cadastro-usuario');
 
-    // depois de receber a resposta da requisição
-    if (!respostaAPI.success) {
-        feedbackSignup(respostaAPI.message, 'danger', 'bi-x-lg');
-        return
-    }
+        if (dados.email == 'leticia@teste.com') {
+            alertCadastro(true, 'E-mail já cadastrado por outro usuário.');
+            return
+        }
 
-    evento.target.reset();
-    modalCadastrar.hide();
-    notificacao(respostaAPI.message, 'success');
-    evento.target.classList.remove('was-validated');
-
+        evento.target.reset();
+        alertCadastro(false);
+        modalCadastrar.hide();
+        notificacao('Usuário cadastrado com sucesso!', 'success');
+        evento.target.classList.remove('was-validated');
+    }, 5000);
 });
 
-const formularioLogin = document.getElementById('form-login');
-formularioLogin.addEventListener('submit', async (evento) => {
+
+document.getElementById('form-login').addEventListener('submit', async (evento) => {
     evento.preventDefault();
 
     if (!evento.target.checkValidity()) {
@@ -48,84 +48,22 @@ formularioLogin.addEventListener('submit', async (evento) => {
         password: evento.target['password-login'].value
     }
 
-    loadingLogin(true);
-    const respostaAPI = await signin(dados.email, dados.password);
+    loading(true, 'login-usuario');
 
     // depois de receber a resposta da requisição
-    loadingLogin(false);
-
-    if (!respostaAPI.success) {
-        notificacao(respostaAPI.message, 'danger');
-        return
-    }
-
-    evento.target.reset();
-    notificacao(respostaAPI.message, 'success');
-    evento.target.classList.remove('was-validated');
-
-    console.log(respostaAPI.data);
-})
-
-
-// Alert de cadastro de usuário
-function feedbackSignup(mensagem, tipo, icone) {
-    const feedbackCadastroContainer = document.getElementById('container-feedback');
-    feedbackCadastroContainer.innerHTML = '';
-
-    const alert = document.createElement('div');
-    alert.innerHTML = `
-        <div class="alert alert-${tipo} alert-dismissible" role="alert">
-            <div>
-                <i class="bi ${icone}"></i>
-                ${mensagem}
-            </div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar Alerta"></button>
-        </div>
-    `;
-    feedbackCadastroContainer.appendChild(alert);
-
-    // sumir com o alerta automaticamente após 5segundos
     setTimeout(() => {
-        feedbackCadastroContainer.innerHTML = '';
-    }, 5000)
+        loading(false, 'login-usuario');
 
-}
+        if (dados.email != 'leticia@teste.com') {
+            notificacao('Credenciais inválidas', 'danger');
+            return
+        }
 
-// Toast de notificação
-function notificacao(mensagem, tipo) {
-    const container = document.getElementById('containerToastNotificacao');
-    container.innerHTML = `
-        <div class="toast align-items-center text-bg-${tipo}" id="toast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body">
-                    ${mensagem}
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-        </div>
-    `;
-
-    const toastNotificacao = new bootstrap.Toast('#toast');
-    toastNotificacao.show();
-}
-
-function loadingLogin(show) {
-    const btnLogin = document.getElementById('btn-login');
-
-    if (show) {
-        btnLogin.setAttribute('disabled', 'true');
-
-        btnLogin.innerHTML = `
-            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-            <span role="status">Carregando...</span>
-        `
-    } else {
-        btnLogin.removeAttribute('disabled');
-        btnLogin.innerHTML = `Login`;
-    }
-
-
-}
+        evento.target.reset();
+        notificacao('Login realizado com sucesso', 'success');
+        evento.target.classList.remove('was-validated');
+    }, 5000);
+});
 
 
 
