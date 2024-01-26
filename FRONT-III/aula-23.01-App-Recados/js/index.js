@@ -1,68 +1,63 @@
 const modalCadastrar = new bootstrap.Modal('#modalCadastrar');
 
 document.getElementById('form-cadastro').addEventListener('submit', async (evento) => {
+    // remover o comportamento de reload
     evento.preventDefault();
 
-    if (!evento.target.checkValidity()) {
+    // verificar se o formulário está inválido
+    const formularioValido = evento.target.checkValidity();
+    if (!formularioValido) {
+        // executa aqui quando o formulario não for válido
         evento.stopPropagation();
-        evento.target.classList.add('was-validated');
+        evento.target.classList.add('was-validated')
         return
     }
 
-    const dados = {
+    // criar a variável que irá armazenar os dados do usuário
+    const novoUsuario = {
         email: evento.target.email.value,
-        password: evento.target.password.value
+        password: evento.target.password.value,
     }
 
-    // antes de disparar a requisição
+    // antes de disparar a requisição à APÌ
     loading(true, 'cadastro-usuario');
 
-    setTimeout(() => {
-        loading(false, 'cadastro-usuario');
+    // chamar a API e aguardar a resposta
+    const resposta = await signup(novoUsuario.email, novoUsuario.password);
 
-        if (dados.email == 'leticia@teste.com') {
-            alertCadastro(true, 'E-mail já cadastrado por outro usuário.');
-            return
-        }
+    // desabilito o loading
+    loading(false, 'cadastro-usuario');
 
-        evento.target.reset();
-        alertCadastro(false);
-        modalCadastrar.hide();
-        notificacao('Usuário cadastrado com sucesso!', 'success');
-        evento.target.classList.remove('was-validated');
-    }, 5000);
+    // se a resposta da API for erro:
+    // 1 - Mostrar alerta
+    // 2 - Parar a função
+    if (resposta.success === false) {
+        alertCadastro(true, resposta.message);
+        return
+    }
+
+    // Se a resposta da API for sucesso:
+    // 1 - Resetar o formulario
+    evento.target.reset();
+
+    // 2 - Remover alerta do modal
+    alertCadastro(false);
+
+    // 3 - Remover a classe de validação do formulário do modal
+    evento.target.classList.remove('was-validated')
+
+    // 4 - Fechar o modal
+    modalCadastrar.hide();
+
+    // 5 - Mostrar Toast de notificação de sucesso
+    notificacao(resposta.message, 'success');
 });
 
 
 document.getElementById('form-login').addEventListener('submit', async (evento) => {
     evento.preventDefault();
 
-    if (!evento.target.checkValidity()) {
-        evento.stopPropagation();
-        evento.target.classList.add('was-validated');
-        return
-    }
 
-    const dados = {
-        email: evento.target['email-login'].value,
-        password: evento.target['password-login'].value
-    }
-
-    loading(true, 'login-usuario');
-
-    // depois de receber a resposta da requisição
-    setTimeout(() => {
-        loading(false, 'login-usuario');
-
-        if (dados.email != 'leticia@teste.com') {
-            notificacao('Credenciais inválidas', 'danger');
-            return
-        }
-
-        evento.target.reset();
-        notificacao('Login realizado com sucesso', 'success');
-        evento.target.classList.remove('was-validated');
-    }, 5000);
 });
 
 

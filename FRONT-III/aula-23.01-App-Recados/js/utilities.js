@@ -1,6 +1,7 @@
 // Spinner Loading
 function loading(mostrar, contexto) {
     const btn = document.getElementById(`btn-${contexto}`);
+
     let textoBotao = '';
 
     switch (contexto) {
@@ -32,8 +33,9 @@ function loading(mostrar, contexto) {
         `
     } else {
         btn.removeAttribute('disabled');
-        btn.innerHTML = textoBotao;
+        btn.innerText = textoBotao;
     }
+
 }
 
 // Toast de notificação
@@ -60,10 +62,7 @@ function alertCadastro(show, mensagem) {
     const feedbackCadastroContainer = document.getElementById('container-feedback');
 
     if (show) {
-        feedbackCadastroContainer.innerHTML = '';
-
-        const alert = document.createElement('div');
-        alert.innerHTML = `
+        feedbackCadastroContainer.innerHTML = `
             <div class="alert alert-danger alert-dismissible" role="alert">
                 <div>
                     <i class="bi bi-x-lg"></i>
@@ -73,7 +72,6 @@ function alertCadastro(show, mensagem) {
             </div>
         `;
 
-        feedbackCadastroContainer.appendChild(alert);
     } else {
         feedbackCadastroContainer.innerHTML = '';
     }
