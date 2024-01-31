@@ -77,3 +77,14 @@ function alertCadastro(show, mensagem) {
     }
 
 }
+
+// ROTINA PARA BUSCAR O TOKEN NO LOCALSTORAGE
+function getToken() {
+    let token = localStorage.getItem("token")
+
+    if (token == null) {
+        return null
+    }
+
+    return JSON.parse(token)
+}
