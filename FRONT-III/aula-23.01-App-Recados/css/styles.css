@@ -1,3 +1,7 @@
+body {
+    min-width: 100vh;
+}
+
 
 .img-logo {
     width: 100px;
@@ -35,4 +39,29 @@
     bottom: 12px;
 }
 
+.bg-image {
+    background: #000000;
+    padding-bottom: 64px;
+}
+
+.card-transparente {
+    min-height: 250px;
+    opacity: 0;
+}
+
+.min-height-250px {
+    min-height: 250px;
+}
+
+@media (min-width: 992px) {
+    .bg-image {
+        min-height: 100vh;
+        background-image: url(../assets/images/FUNDO_3.jpg);
+        background-size: 95%;
+        background-position: bottom;
+        background-repeat: repeat-x;
+        background-color: #000000;
+        padding-bottom: 350px;
+    }
+}
 

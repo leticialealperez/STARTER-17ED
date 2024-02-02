@@ -86,21 +86,25 @@ async function listarRecados(token) {
 // ROTINA PARA MONTAR OS CARDS DE ACORDO COM A LISTA DE RECADOS
 function montarCards(recadosAPI) {
   const row = document.getElementById('lista-recados');
-  row.innerHTML = "";
 
   if (recadosAPI.length === 0) {
     const p = document.createElement('p');
-    p.classList.add('text-center');
+    p.classList.add('text-center', 'text-light');
     p.innerText = "Nenhum recado cadastrado! 😔";
     row.appendChild(p);
     return;
   }
 
-  recadosAPI.reverse().forEach((recado) => {
+  const rowListaColuna1 = document.getElementById('lista-coluna1');
+  const rowListaColuna2 = document.getElementById('lista-coluna2');
+  rowListaColuna1.innerHTML = "";
+  rowListaColuna2.innerHTML = "";
+
+  recadosAPI.forEach((recado, indice, array) => {
     const divCol = document.createElement('div');
-    divCol.classList.add('col-12', 'col-lg-6');
+    divCol.classList.add('col-12');
     divCol.innerHTML = `
-        <div class="card">
+        <div class="card min-height-250px">
             <h5 class="card-header">${recado.description}</h5>
             <div class="card-body">
                 <p class="card-text">${recado.detail}</p>
@@ -117,7 +121,13 @@ function montarCards(recadosAPI) {
             </div>
         </div>
       `;
-    row.appendChild(divCol);
+
+    if (indice % 2 && indice != (array.length - 1)) {
+      rowListaColuna2.appendChild(divCol);
+    } else {
+      rowListaColuna1.appendChild(divCol);
+    }
+
   });
 }
 
@@ -194,6 +204,9 @@ function logout() {
     window.location.href = "index.html"
   }, 2000)
 }
+
+
+
 
 
 
