@@ -14,20 +14,5 @@ let aluno: any = true;
 aluno = "John";
 
 
-// boolean = true ou false
-
-// falsy -  false, undefined, null, "" ou 0
-// truthy - true, "zdbfhj" e qualquer valor numérico diferente de 0
-
-let username = "";
-let altura =  0;
-let matriculado = false;
-
-if(username) {
-    //
-} else {
-    // executa aqui
-}
-
 
 
