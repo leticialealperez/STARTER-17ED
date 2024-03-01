@@ -1,7 +1,6 @@
 /* ENCAPSULAMENTO 
 
-    Conforme o proprio nome sugere, a proposta é ISOLAR o máximo possível os atributos e métodos de uma classe
-    de forma a esconder detalhes de funcionamento interno
+    Conforme o proprio nome sugere, a proposta é ISOLAR o máximo possível os atributos e métodos de uma classe de forma a esconder detalhes de funcionamento interno
 
     - Como aplicar? 
     Utilizando os modificadores de acesso. São eles:
@@ -38,6 +37,73 @@
     Através dos métodos acessores (GETTERS) podemos CONTROLAR como a informação será retornada e através dos métodos modificadores (SETTERS) podemos CONTROLAR que tipo de dado será aceito para modificação e validar alguma outra possível regra para efetivar essa modificação.
 
 */
+
+export class Pessoa { 
+    constructor(
+        private _nome: string,
+        private _cpf: string,
+        private _telefone: string,
+        private _email: string
+    ) {
+        this.validar();
+    }
+
+    public get nome() : string {
+        return this._nome;
+    }
+
+    public get cpf() : string {
+        const doisUltimos = this._cpf.substring(8,10)
+        return `***.***.***-${doisUltimos}`;
+    }
+
+    public get telefone() : string {
+        return this._telefone
+    }
+
+    public get email() : string {
+        return this._email;
+    }
+
+    
+    public set telefone(novoTelefone : string) {
+        // 51999887766
+        // 5132325555
+        if(novoTelefone.length > 11 || novoTelefone.length < 10 ) {
+            throw Error('Telefone inválido')
+        }
+
+        this._telefone = novoTelefone;
+    }
+
+    public set email(novoEmail: string) {
+
+        if(!novoEmail.includes('@')) {
+            throw Error('E-mail inválido')
+        }
+
+        this._email = novoEmail
+    }
+
+    private validar(): void {
+        if(this._nome.length < 3) {
+            throw Error('Nome inválido')
+        }
+
+        if(this._cpf.length !== 11) {
+            throw Error('CPF inválido')
+        }
+
+        if(this._telefone.length > 11 || this._telefone.length < 10 ) {
+            throw Error('Telefone inválido')
+        }
+
+        if(!this._email.includes('@')) {
+            throw Error('E-mail inválido')
+        }
+    }
+       
+}
 
 
 

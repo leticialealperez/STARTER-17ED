@@ -11,4 +11,35 @@
 
 */
 
+abstract class Pagamento {
+    public efetivar(): void {}
+}
+
+// interface Pagamento {
+//     efetivar: () => void;
+// }
+
+class PagamentoCredito implements Pagamento{
+    public efetivar(): void {
+        // Estabelecer comunicação com a OPERADORA
+        // COMO VAI SER FEITO?
+    }
+
+}
+
+
+class PagamentoDinheiro implements Pagamento {
+    public efetivar(): void {
+        // Botar no bolso do patrão 
+    }
+}
+
+
+class PagamentoPix implements Pagamento {
+    public efetivar(): void {
+        // Solicitar comprovante da transferencia
+    }
+}
+
+
 
