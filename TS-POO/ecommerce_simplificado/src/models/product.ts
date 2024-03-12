@@ -61,6 +61,16 @@ export class Product {
         const newComment: Comment = new Comment(user, this, content);
         comments.push(newComment);
     }
+
+    public updateComment(idComment: string, newContent: string): void {
+        const commentFound = comments.find((comment) => comment.id === idComment && comment.product === this);
+        
+        if(!commentFound) {
+            throw Error('Comment not found')
+        }
+
+        commentFound.content = newContent
+    }
     
     public addRating(rate: Rate, user: User): void {
         const newRating: Rating = new Rating(user, this, rate); 
