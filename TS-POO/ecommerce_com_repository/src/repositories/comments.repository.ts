@@ -28,4 +28,14 @@ export class CommentsRepositoryInMemory implements CommentRepository {
         })
     }
 
+    public updateCommentByProduct(product: Product, idComment: string, newContent: string): void {
+        const commentFound = comments.find((comment) => comment.id === idComment && comment.product === product);
+        
+        if(!commentFound) {
+            throw Error('Comment not found')
+        }
+
+        commentFound.content = newContent
+    }
+
 }

@@ -1,3 +1,4 @@
+import { comments } from './databases/comments.database';
 import { Product } from './models/product';
 import { User } from './models/user';
 import { ProductsRepositoryInMemory } from './repositories/product.repository';
@@ -48,6 +49,7 @@ camisaBranca.addRating(1, joao)
 jaqueta.addRating(5, joao)
 calcaJeans.addRating(4, maria)
 
+calcaJeans.updateComment(comments[0].id, 'Um pouco acima do preço')
 
 joao.showProducts()
 maria.showProducts()

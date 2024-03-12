@@ -50,4 +50,8 @@ export class Product {
         const newRating: Rating = new Rating(user, this, rate); 
         new RatingsRepositoryInMemory().create(newRating);
     }
+
+    public updateComment(idComment: string, newContent: string): void {
+        new CommentsRepositoryInMemory().updateCommentByProduct(this, idComment, newContent);
+    }
 }
