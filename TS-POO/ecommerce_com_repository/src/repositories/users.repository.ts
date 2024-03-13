@@ -24,4 +24,10 @@ export class UserRepositoryInMemory implements UserRepository {
 
         return userFound
     }
+
+    public checkUsernameAlreadyRegister(username: string): boolean {
+        const exists = users.some((user) => user.username === username);
+
+        return exists
+    }
 }

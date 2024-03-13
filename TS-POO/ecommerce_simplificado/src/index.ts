@@ -48,5 +48,12 @@ calcaJeans.addRating(4, maria)
 
 calcaJeans.updateComment(comments[0].id, 'Um pouco acima do preço')
 
-joao.showProducts()
-maria.showProducts()
+joao.showProducts();
+maria.showProducts();
+
+
+const existe = ['joao', 'maria', 'pedro'].some((user) => user === 'joao')
+
+if(existe) {
+    throw Error('Usuario já cadastrado')
+}

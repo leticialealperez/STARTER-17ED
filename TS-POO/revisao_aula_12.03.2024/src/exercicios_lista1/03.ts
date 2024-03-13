@@ -18,7 +18,7 @@ const niquileiraAndrea: Carteira = {
     transacoes: []
 }
 
-function criarTransacao(novaTransacao: Transacao): void {
+export function criarTransacao(novaTransacao: Transacao): void {
 
     if(novaTransacao.tipo === 'saida') {
         if(niquileiraAndrea.saldo >= novaTransacao.valor) {
@@ -33,7 +33,7 @@ function criarTransacao(novaTransacao: Transacao): void {
     }
 }
 
-function criarTransacaoV2(novaTransacao: Transacao): void {
+export function criarTransacaoV2(novaTransacao: Transacao): void {
     if(novaTransacao.tipo === 'saida' && niquileiraAndrea.saldo < novaTransacao.valor) {
         throw Error('Saldo insuficiente para esta transação')
     }
@@ -46,5 +46,4 @@ function criarTransacaoV2(novaTransacao: Transacao): void {
 
 }
 
-criarTransacao({ tipo: 'entrada', valor: 100 })
-criarTransacao({ tipo: 'saida', valor: 50 })
+

@@ -1,4 +1,5 @@
 import { randomUUID } from 'crypto';
+import { UserRepositoryInMemory } from '../repositories/users.repository';
 import { Product } from './product';
 
 export class User {
@@ -10,7 +11,7 @@ export class User {
         public username: string,
         public email: string,
     ) {
-
+        this.validate();
     }
 
     public get id() : string {
@@ -42,6 +43,23 @@ export class User {
         }, 0);
 
         console.log(`Total: R$ ${total.toFixed(2).replace('.', ",")}`)
+    }
+
+    private validate(): void {
+        this.validateEmail();
+        this.validateUsername();
+    }
+
+    private validateUsername(): void {
+        const exists = new UserRepositoryInMemory().checkUsernameAlreadyRegister(this.username)
+
+        if(exists) {
+            throw Error('Username already register')
+        }
+    }
+
+    private validateEmail(): void {
+        
     }
 }
 

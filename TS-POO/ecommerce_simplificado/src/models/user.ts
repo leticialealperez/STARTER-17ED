@@ -4,6 +4,7 @@ import { Product } from './product';
 export class User {
     private _id: string = randomUUID();
     private _cart: Product[] = [];
+    private _seguindo: User[] = [];
 
     constructor(
         public name: string,
@@ -43,5 +44,21 @@ export class User {
 
         console.log(`Total: R$ ${total.toFixed(2).replace('.', ",")}`)
     }
+
+    public follow(user: User): void {
+        if(user === this) {
+
+        }
+
+        // não seguir duas vezes a mesma pessoa
+    }
 }
+
+
+const geverton: User = new User();
+const leticia: User = new User();
+const leo: User = new User();
+geverton.follow(geverton)
+
+leo.follow(geverton)
 
