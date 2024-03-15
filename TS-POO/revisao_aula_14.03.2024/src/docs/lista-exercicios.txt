@@ -1,4 +1,4 @@
-1. Crie uma classe chamada “Pessoa” que possua atributos para armazenar nome, data de nascimento e profissão. Implemente métodos para calcular a idade, verificar se a pessoa já é maior de idade (considerando o dia, mes e ano) e exibir informações da pessoa.
+1. Crie uma classe chamada “Pessoa” que possua atributos para armazenar nome, data de nascimento e profissão. Implemente métodos para calcular a idade, verificar se a pessoa já é maior de idade (considerando o dia, mes e ano) e exibir informações da pessoa. ✅
 
 
 
