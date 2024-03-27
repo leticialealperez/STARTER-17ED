@@ -22,6 +22,7 @@ export const Banner = styled.div`
             margin-bottom: .5rem;
             font-weight: bolder;
             line-height: 1.2;
+            color: #ffff;
         }
 
         p {
@@ -30,6 +31,7 @@ export const Banner = styled.div`
             margin-bottom: 1.25rem;
             font-size: 1.25rem;
             line-height: 1.4;
+            color: #ffff;
         }
     }
 `;

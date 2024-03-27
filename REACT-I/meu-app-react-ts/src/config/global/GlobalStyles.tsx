@@ -11,7 +11,7 @@ export const GlobalStyles = createGlobalStyle`
     }
 
     body {
-        background-color: rgb(33, 37, 41);
-        color: rgb(222, 226, 230);
+        background-color: ${(props) => props.theme.backgroundColor};
+        color: ${(props) => props.theme.fontColor};
     }
 `;

@@ -1,23 +1,20 @@
 import styled from 'styled-components';
 
-interface ButtonProps {
-    $type: 'banner' | 'card'
-}
 
-export const Button = styled.button<ButtonProps>`
+export const Button = styled.button`
     color: #fff;
-    background-color: ${(props) => props.$type === 'banner' ? '#0d6efd' : '#918e8ecc' };
-    border: 0px solid ${(props) => props.$type === 'banner' ? '#0d6efd' : '#918e8ecc' };
+    background-color: #0d6efd;
+    border: 1px solid #0d6efd;
     border-radius: 8px;
-    padding:  ${(props) => props.$type === 'banner' ? '18px 28px' : '12px 24px' };
+    padding:  18px 28px;
     font-size: 1rem;
     cursor: pointer;
-    font-weight: ${(props) => props.$type === 'banner' ? 600 : 500 };
+    font-weight: 600;
     
     &:hover {
         color: #fff;
-        background-color: ${(props) => props.$type === 'banner' ? '#0b5ed7' : '#616161e1' };
-        border-color: ${(props) => props.$type === 'banner' ? '#0b5ed7' : '#616161e1' };
+        background-color: #0b5ed7;
+        border-color: #0b5ed7;
     }
 
     &:focus {
@@ -37,3 +34,5 @@ export const Button = styled.button<ButtonProps>`
         border-color: #0d6efd;
     }
 `;
+
+
