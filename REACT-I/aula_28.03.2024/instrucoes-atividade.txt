@@ -1,0 +1,30 @@
+1 - Rodar o comando "npm create vite@latest growturismos -- --template react-ts" para criar o projeto react com TS
+2 - Abrir o vscode na pasta criada pelo Vite
+3 - Rodar o comando "npm install" para instalar as dependencias
+4 - Instalar as dependências do projeto
+Rodar o comando "npm install react-router-dom styled-components" para instalar o gerenciador de rotas e a lib que utilizaremos para criar os componentes de estilo
+5 - Excluir arquivos .css que não serão utilizados
+6 - Excluir arquivos de imagens que não serão utilizados
+7 - Excluir as importações dos arquivos excluidos para não gerar erro
+8 - Limpar todo código do return do App.tsx, deixar apenas um h1 com "hello world"
+9 - Escolher a fonte Montserrat a ser utilizada no Google Fonts e adicioná-la no arquivo index.html
+10 - Criar pasta "assets" na pasta "src" e adicionar as imagens para o projeto
+11 - Criar pasta "pages" dentro de "src" e dentro criar 4 components: Home.tsx, Planos.tsx, QuemSomos.tsx, Servicos.tsx
+  Esses componentes devem retornar apenas um h1 com o nome da página referente, no inicio
+12 - Criar pasta "routes" dentro de "src/config" e dentro dela criar o componente AppRoutes.tsx. Dentro deste componente deve conter as configurações necessárias para criar o sistema de roteamento com a lib React-Router-DOM e o componente "AppRoutes" que deverá retornar o Provider de rotas
+13 - Chamar o componente RoutesApp no componente App
+14 - Criar pasta "global" dentro de "src/config" e dentro dela criar o componente "GlobalStyle.tsx" com o estilo global da aplicação (fontes, resets, sizes)
+15 - Chamar o componente GlobalStyle dentro de App, acima do componente de rotas
+16 - Criar o componente Header com os estilos necessários para replicar o layout
+16.1 - Criar o componente Footer com os estilos necessários para replicar o layout
+17 - Criar pasta "layout" dentro de "src/config" e dentro dela criar componente DefaultLayout
+17.1 - O componente DefaultLayout deve poder receber outro componente como children
+17.2 - Dentro do componente DefaultLayout deve conter a chamada para os componentes Header e Footer. Entre eles, deve ser mostrado o children
+18 - Englobar todas as páginas da aplicação (Home, Planos, QuemSomos, Servicos) com o componente DefaultLayout
+19 - Criar o conteúdo e estilo à ser mostrado na página Home.tsx
+20 -  Criar o conteúdo e estilo à ser mostrado na página QuemSomos.tsx
+21 -  Criar o conteúdo e estilo à ser mostrado na página Servicos.tsx
+22 -  Criar o conteúdo e estilo à ser mostrado na página Planos.tsx
+
+
+
