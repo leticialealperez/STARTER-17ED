@@ -1,7 +1,6 @@
-import { DefaultTheme } from 'styled-components';
-
+import { DefaultTheme } from "styled-components";
 
 export const lightTheme: DefaultTheme = {
-    backgroundColor: '#ffff',
-    fontColor: 'rgb(33, 37, 41)'
-}
+  backgroundColor: "#ffff",
+  fontColor: "rgb(33, 37, 41)",
+};
