@@ -18,6 +18,8 @@ export const Button = styled.button`
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    width: 400px;
+    margin-bottom: 48px;
 
     &:hover{
         background: linear-gradient(to right,#5482d0 ,#7d5ee3);

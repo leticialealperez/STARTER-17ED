@@ -6,6 +6,5 @@ export const ContainerFlex = styled.main`
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 68px;
     min-height: 100vh;
 `;
