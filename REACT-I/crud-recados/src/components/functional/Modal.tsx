@@ -10,7 +10,7 @@ import { ModalTitle } from '../styled/Modal/ModalTitle';
 
 export function Modal() {
     return (
-        <ModalStyled>
+        <ModalStyled style={{display: 'none'}}>
             <ModalDialog>
                 <ModalContent>
                     <ModalHeader>
