@@ -18,25 +18,22 @@ interface Aluno {
 
 export function ListaPresenca() {
     const [alunos, setAlunos] = useState<Aluno[]>([]);
+    const [nome, setNome] = useState<string>("");
 
     function cadastrarAluno() {
-        const input = document.getElementById('nome-pessoa') as HTMLInputElement;
-
-        if(input.value.length < 3) {
+        if(nome.length < 3) {
             alert("Precisa ter no minimo 3 caracteres!");
             return
         }
 
-        const novoAluno: Aluno = { id: generateUuid(), nome: input.value, dataLancamento: new Date() };
+        const novoAluno: Aluno = { id: generateUuid(), nome: nome, dataLancamento: new Date() };
 
         setAlunos((currentValue) => [novoAluno, ...currentValue]);
 
-        input.value = "";
+        setNome("");
     }
 
     function removerAluno(idAluno: string) {
-        console.log(idAluno)
-
         setAlunos((currentValue) =>  {
             const novaLista = currentValue.filter((aluno) => aluno.id !== idAluno)
             return novaLista
@@ -48,13 +45,15 @@ export function ListaPresenca() {
             <ContainerFlex>
                 <Title>Lista de Presença</Title>
                 
-                <Input type="text" name="nome-pessoa" id='nome-pessoa' />
+                <Input type="text" name="nome-pessoa" id='nome-pessoa' value={nome} onChange={(ev) => setNome(ev.target.value)} placeholder='Nome Aluno'/>
                 
                 <Button onClick={() => cadastrarAluno()}>Adicionar</Button>
 
                 <ul>
                     {alunos.map((aluno) => (
-                        <li key={aluno.id} onClick={() => removerAluno(aluno.id)}>{aluno.nome} - {aluno.dataLancamento.toLocaleDateString('pt-BR', { hour: "2-digit", minute: "2-digit", second: "2-digit" })}</li>
+                        <li key={aluno.id} onClick={() => removerAluno(aluno.id)}>
+                            {aluno.nome} - {aluno.dataLancamento.toLocaleDateString('pt-BR', { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
+                        </li>
                     ))}
                 </ul>  
             </ContainerFlex>

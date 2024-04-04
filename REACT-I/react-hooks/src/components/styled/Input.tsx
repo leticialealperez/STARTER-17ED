@@ -9,5 +9,6 @@ export const Input = styled.input`
   font-size: 2rem;
   background-color: #ccc;
   margin-bottom: 18px;
+  display: block;
 
 `;
