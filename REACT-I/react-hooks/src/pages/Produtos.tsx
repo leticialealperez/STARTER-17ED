@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Fragment } from 'react/jsx-runtime';
-import { v4 as generateUuid } from 'uuid';
+import { v4 as generateUUID } from 'uuid';
 import { Button } from '../components/styled/Button';
 import { ContainerFlex } from '../components/styled/Container';
 import { Input } from '../components/styled/Input';
@@ -23,7 +23,7 @@ export function Produtos() {
         event.preventDefault();
 
         const novoProduto: Produto = { 
-            id: generateUuid(), 
+            id: generateUUID(), 
             nome: event.currentTarget['nome'].value, 
             preco: Number(event.currentTarget['preco'].value) 
         };
@@ -42,9 +42,9 @@ export function Produtos() {
                 <Title>Produtos</Title>
                 
                 <form onSubmit={cadastrarProduto}>
-                    <Input type="text" name="nome" id='nome' placeholder='Nome' required />
+                    <Input type="text" name="nome" placeholder='Nome' required />
 
-                    <Input type="number" name="preco" id='preco' placeholder='Preço' required step={0.01} />
+                    <Input type="number" name="preco" placeholder='Preço' required step={0.01}/>
                     
                     <Button type='submit'>Adicionar</Button>
                 </form>
@@ -60,3 +60,4 @@ export function Produtos() {
         </Fragment>
     )
 }
+
