@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Fragment } from 'react/jsx-runtime';
 import { v4 as generateUUID } from 'uuid';
 import { Modal } from '../components/functional/Modal';
@@ -13,10 +13,36 @@ export interface Recado {
     detalhamento: string;
 }
 
+// Ciclo de vida de um componente - Quando?
+// render -> nasceu na dom virtual
+// componentDidMounth -> momento em que o componente montou na tela -> nasceu na dom real
+// componentDidUnmounth -> momento em que o componente desmonta na tela -> morrer na dom real
+// componentDidUpdated -> momento em que o componente re-renderiza -> atualização de estado ou props
+
+
 export function Home() {
     const [recados, setRecados] = useState<Recado[]>([]);
     const [aberto, setAberto] = useState<boolean>(false);
     const [idExcluir, setIdExcluir] = useState<string>("");
+
+    function executaSempre() {
+        console.log("useEffect >>> executaSempre")
+    }
+
+    function executaApenasUmaVez() {
+        console.log("useEffect >>> executa apenas uma vez")
+    }
+
+    // render
+    useEffect(executaSempre);
+
+    // componentDidMounth
+    // undefined, null, "", 0, false, NAN          => falsy
+    // {}, [], "a", true, qualquer numero !== 0    => truthy
+    useEffect(executaApenasUmaVez, []); 
+
+
+
 
     function cadastrar(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
