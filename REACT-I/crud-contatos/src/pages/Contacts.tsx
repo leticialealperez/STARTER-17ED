@@ -8,11 +8,6 @@ import { Table } from "../components/styled/Table";
 import { Title } from "../components/styled/Title";
 import { contactsMock } from "../mock/contacts";
 
-export interface ModalState {
-	mode?: "create" | "update" | "delete";
-	isOpen: boolean;
-}
-
 export interface Contact {
 	id: string;
 	name: string;
