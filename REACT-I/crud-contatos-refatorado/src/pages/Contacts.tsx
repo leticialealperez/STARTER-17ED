@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 import { v4 as randomUUID } from "uuid";
 import { Modal } from "../components/functional/Modal";
+import { Notification } from "../components/functional/Notification";
 import { ActionButton } from "../components/styled/ActionButton";
 import { Container } from "../components/styled/Container";
 import { Divider } from "../components/styled/Divider";
@@ -19,9 +20,6 @@ export interface Contact {
 
 export function Contacts() {
 	const [contacts, setContacts] = useState<Contact[]>([]);
-	const [name, setName] = useState<string>("");
-	const [phone, setPhone] = useState<string>("");
-	const [email, setEmail] = useState<string>("");
 	const [modalCreateIsOpen, setModalCreateIsOpen] = useState<boolean>(false);
 	const [modalUpdateIsOpen, setModalUpdateIsOpen] = useState<boolean>(false);
 	const [contactSelected, setContactSelected] = useState<Contact>({
@@ -31,60 +29,50 @@ export function Contacts() {
 		phone: "",
 	});
 
-	// CICLO DE VIDA render(quando monta e quando atualiza) => sem dependencia
-	// useEffect(() => {
-	// 	console.log("SEM DEPENDENCIA");
-	// });
+	const inputName = useRef<HTMLInputElement>(null);
+	const inputPhone = useRef<HTMLInputElement>(null);
+	const inputEmail = useRef<HTMLInputElement>(null);
+	const notificationRef = useRef<HTMLDivElement>(null);
 
-	// CICLO DE VIDA didComponentMount - quando monta => array de dependencias vazio
 	useEffect(() => {
-		// vai no localstorage e busca uma key chamada "contacts"
 		const storageData = localStorage.getItem("contacts");
 
-		// se existir, utiliza do valor para setar o valor estado "contacts"
 		if (storageData) {
 			setContacts(JSON.parse(storageData));
 		}
 	}, []);
 
-	// CICLO DE VIDA didComponentUpdate (quando atualiza o valor de um estado ou props) => array preenchido com aquilo que será observado (state ou props)
 	useEffect(() => {
 		localStorage.setItem("contacts", JSON.stringify(contacts));
 	}, [contacts]);
 
 	function confirmCreate() {
-		// validar preenchimento dos campos
-		if (!name.length) {
-			alert("É preciso preencher o nome");
+		if (!inputName.current?.validity.valid) {
+			inputName.current?.focus();
 			return;
 		}
 
-		if (phone.length < 10 || phone.length > 11) {
-			alert("É preciso preencher um telefone válido, sem caracteres especiais");
+		if (!inputPhone.current?.validity.valid) {
+			inputPhone.current?.focus();
 			return;
 		}
 
-		if (!email.includes("@") || !email.includes(".com")) {
-			alert("É preciso preencher um e-mail válido");
+		if (!inputEmail.current?.validity.valid) {
+			inputEmail.current?.focus();
 			return;
 		}
 
-		// criar o objeto do novo contato
 		const newContact: Contact = {
 			id: randomUUID(),
-			name: name,
-			email: email,
-			phone: phone,
+			name: inputName.current.value,
+			email: inputEmail.current.value,
+			phone: inputPhone.current.value,
 		};
 
-		// adicionar na lista de contatos
 		setContacts((current) => [newContact, ...current]);
-
-		// limpar os campos
 		clearFields();
-
-		// fechar o modal de cadastro
 		closeModal("create");
+		showNotification();
 	}
 
 	function closeModal(mode: "create" | "update") {
@@ -104,9 +92,9 @@ export function Contacts() {
 	}
 
 	function clearFields() {
-		setName("");
-		setPhone("");
-		setEmail("");
+		inputName.current!.value = "";
+		inputPhone.current!.value = "";
+		inputEmail.current!.value = "";
 	}
 
 	function handleDelete(contact: Contact) {
@@ -124,29 +112,30 @@ export function Contacts() {
 		setContactSelected(contact);
 	}
 
-	function handleInputChange(ev: React.ChangeEvent<HTMLInputElement>) {
-		setContactSelected({
-			...contactSelected,
-			[ev.currentTarget.name]: ev.currentTarget.value, //email
-		});
-	}
-
 	function confirmUpdate() {
-		// preciso saber qual a posição do array será atualizada
 		const indexFound = contacts.findIndex((c) => c.id === contactSelected.id);
 
-		if (indexFound !== -1) {
-			// Essa intrução é capaz de copiar apenas os valores do array "contacts" para dentro de "copy"
-			// const copy = contacts; ❌ não recomendado
-			const copy = [...contacts]; // ✅ recomendado
+		setContacts((currentList) => {
+			currentList[indexFound] = {
+				id: contactSelected.id,
+				name: inputName.current!.value,
+				phone: inputPhone.current!.value,
+				email: inputEmail.current!.value,
+			};
 
-			// realizar a substituição do valor que está no indice
-			copy[indexFound] = contactSelected;
-
-			setContacts(copy);
-		}
+			return currentList;
+		});
 
 		closeModal("update");
+		showNotification();
+	}
+
+	function showNotification() {
+		notificationRef.current!.setAttribute("style", "display: block");
+
+		setTimeout(() => {
+			notificationRef.current!.removeAttribute("style");
+		}, 2000);
 	}
 
 	return (
@@ -194,26 +183,22 @@ export function Contacts() {
 				actionClose={() => closeModal("create")}
 			>
 				<Input
+					ref={inputName}
 					type='text'
 					name='name'
 					placeholder='Nome Completo'
-					value={name}
-					onChange={(ev) => setName(ev.currentTarget.value)}
+					required
 				/>
 				<Input
+					ref={inputPhone}
 					type='tel'
 					name='phone'
 					placeholder='Telefone'
-					value={phone}
-					onChange={(ev) => setPhone(ev.currentTarget.value)}
+					required
+					minLength={10}
+					maxLength={11}
 				/>
-				<Input
-					type='email'
-					name='email'
-					placeholder='E-mail'
-					value={email}
-					onChange={(ev) => setEmail(ev.currentTarget.value)}
-				/>
+				<Input ref={inputEmail} type='email' name='email' placeholder='E-mail' required />
 			</Modal>
 
 			<Modal
@@ -224,27 +209,29 @@ export function Contacts() {
 				actionConfirm={confirmUpdate}
 			>
 				<Input
+					ref={inputName}
 					type='text'
 					name='name'
 					placeholder='Nome Completo'
-					value={contactSelected.name}
-					onChange={handleInputChange}
+					defaultValue={contactSelected.name}
 				/>
 				<Input
+					ref={inputPhone}
 					type='tel'
 					name='phone'
 					placeholder='Telefone'
-					value={contactSelected.phone}
-					onChange={handleInputChange}
+					defaultValue={contactSelected.phone}
 				/>
 				<Input
+					ref={inputEmail}
 					type='email'
 					name='email'
 					placeholder='E-mail'
-					value={contactSelected.email}
-					onChange={handleInputChange}
+					defaultValue={contactSelected.email}
 				/>
 			</Modal>
+
+			<Notification ref={notificationRef} icon='✅' text='Contato salvo com sucesso' />
 		</Fragment>
 	);
 }

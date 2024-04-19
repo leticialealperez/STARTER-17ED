@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Fragment } from "react/jsx-runtime";
 import { ButtonHome } from "../components/styled/ButtonHome";
 import { ContainerFlex } from "../components/styled/ContainerFlex";
@@ -34,11 +34,6 @@ export function Home() {
 				>
 					Visualizar Contatos
 				</ButtonHome>
-
-				{/* essa nevagação depende de alguma lógica? NÃO */}
-				<Link to='/contacts' style={{ color: "white" }}>
-					Visualizar Contatos
-				</Link>
 			</ContainerFlex>
 		</Fragment>
 	);
