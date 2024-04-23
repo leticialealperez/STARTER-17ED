@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { ThemeProvider } from "styled-components";
 import { DefaultTheme } from "styled-components/dist/types";
-import { ButtonToggleTheme } from "./components/styled/ButtonToggleTheme";
+import { ThemeContext } from "./config/contexts/ThemeContext";
 import { GlobalStyles } from "./config/global/GlobalStyles";
 import { AppRoutes } from "./config/routes/AppRoutes";
 import { darkTheme } from "./config/themes/dark";
@@ -28,14 +28,12 @@ export function App() {
 
 	return (
 		<Fragment>
-			<ThemeProvider theme={theme}>
-				<GlobalStyles />
-				<AppRoutes />
-
-				<ButtonToggleTheme onClick={toggleTheme}>
-					{theme.name === "light" ? "🌛" : "🌞"}
-				</ButtonToggleTheme>
-			</ThemeProvider>
+			<ThemeContext.Provider value={{ theme, changeTheme: toggleTheme }}>
+				<ThemeProvider theme={theme}>
+					<GlobalStyles />
+					<AppRoutes />
+				</ThemeProvider>
+			</ThemeContext.Provider>
 		</Fragment>
 	);
 }

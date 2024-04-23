@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { Fragment } from "react/jsx-runtime";
 import { v4 as randomUUID } from "uuid";
 import { Modal } from "../components/functional/Modal";
 import { Notification } from "../components/functional/Notification";
@@ -10,6 +9,7 @@ import { FloatButton } from "../components/styled/FloatButton";
 import { Input } from "../components/styled/Input";
 import { Table } from "../components/styled/Table";
 import { Title } from "../components/styled/Title";
+import { DefaultLayout } from "../config/layout/DefaultLayout";
 
 export interface Contact {
 	id: string;
@@ -139,7 +139,7 @@ export function Contacts() {
 	}
 
 	return (
-		<Fragment>
+		<DefaultLayout>
 			<Container>
 				<Title>Contatos</Title>
 				<Divider />
@@ -232,6 +232,6 @@ export function Contacts() {
 			</Modal>
 
 			<Notification ref={notificationRef} icon='✅' text='Contato salvo com sucesso' />
-		</Fragment>
+		</DefaultLayout>
 	);
 }

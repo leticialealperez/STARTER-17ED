@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Fragment } from "react/jsx-runtime";
 import { ButtonHome } from "../components/styled/ButtonHome";
 import { ContainerFlex } from "../components/styled/ContainerFlex";
 import { Title } from "../components/styled/Title";
+import { DefaultLayout } from "../config/layout/DefaultLayout";
 
 export function Home() {
 	const navigate = useNavigate();
@@ -18,7 +18,7 @@ export function Home() {
 	}
 
 	return (
-		<Fragment>
+		<DefaultLayout>
 			<ContainerFlex>
 				<Title>Bem-vindo 🚀</Title>
 
@@ -35,6 +35,6 @@ export function Home() {
 					Visualizar Contatos
 				</ButtonHome>
 			</ContainerFlex>
-		</Fragment>
+		</DefaultLayout>
 	);
 }

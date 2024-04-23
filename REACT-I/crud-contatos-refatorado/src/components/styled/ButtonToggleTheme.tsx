@@ -1,14 +1,11 @@
 import styled from "styled-components";
 
 export const ButtonToggleTheme = styled.button`
-	position: fixed;
-	top: 15px;
-	left: 15px;
-	font-size: 1.5rem;
+	font-size: 1.3rem;
 	border: 0;
-	padding: 12px;
+	padding: 8px;
 	border-radius: 5px;
-	background-color: ${(props) => props.theme.textColor};
+	background-color: transparent;
 
 	&:hover {
 		cursor: pointer;
