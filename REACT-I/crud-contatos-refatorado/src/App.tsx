@@ -28,7 +28,7 @@ export function App() {
 
 	return (
 		<Fragment>
-			<ThemeContext.Provider value={{ theme, changeTheme: toggleTheme }}>
+			<ThemeContext.Provider value={{ theme: theme, changeTheme: toggleTheme }}>
 				<ThemeProvider theme={theme}>
 					<GlobalStyles />
 					<AppRoutes />

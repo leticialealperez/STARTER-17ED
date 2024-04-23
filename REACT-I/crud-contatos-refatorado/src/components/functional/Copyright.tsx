@@ -5,12 +5,12 @@ export function Copyright() {
 	return (
 		<CopyRightText>
 			<small>
-				{"Copyright © "}
+				Copyright ©{" "}
 				<Link href='http://www.growdev.com.br' target='_blank' rel='noopener noreferrer'>
 					Growdev
-				</Link>{" "}
-				{new Date().getFullYear()}
-				{"."}
+				</Link>
+				&nbsp;
+				{new Date().getFullYear()}.
 			</small>
 		</CopyRightText>
 	);

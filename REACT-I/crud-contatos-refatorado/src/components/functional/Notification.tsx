@@ -16,3 +16,9 @@ export const Notification = forwardRef<HTMLDivElement, NotificationProps>((props
 		</NotificationWrapper>
 	);
 });
+
+interface TesteProps {}
+
+export const Teste = forwardRef<HTMLHeadingElement, TesteProps>((_, ref) => {
+	return <h1 ref={ref}>Hello</h1>;
+});
