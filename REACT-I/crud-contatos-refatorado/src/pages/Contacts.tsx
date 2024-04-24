@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { v4 as randomUUID } from "uuid";
 import { Modal } from "../components/functional/Modal";
 import { Notification } from "../components/functional/Notification";
@@ -46,7 +46,29 @@ export function Contacts() {
 		localStorage.setItem("contacts", JSON.stringify(contacts));
 	}, [contacts]);
 
-	function confirmCreate() {
+	const closeModalCached = useCallback((mode: "create" | "update") => {
+		if (mode === "create") {
+			setModalCreateIsOpen(false);
+		} else {
+			setModalUpdateIsOpen(false);
+		}
+	}, []);
+
+	const clearFieldsCached = useCallback(() => {
+		inputName.current!.value = "";
+		inputPhone.current!.value = "";
+		inputEmail.current!.value = "";
+	}, []);
+
+	const showNotificationCached = useCallback(() => {
+		notificationRef.current!.setAttribute("style", "display: block");
+
+		setTimeout(() => {
+			notificationRef.current!.removeAttribute("style");
+		}, 2000);
+	}, []);
+
+	const confirmCreateCached = useCallback(() => {
 		if (!inputName.current?.validity.valid) {
 			inputName.current?.focus();
 			return;
@@ -70,49 +92,38 @@ export function Contacts() {
 		};
 
 		setContacts((current) => [newContact, ...current]);
-		clearFields();
-		closeModal("create");
-		showNotification();
-	}
+		clearFieldsCached();
+		closeModalCached("create");
+		showNotificationCached();
+	}, [closeModalCached, clearFieldsCached, showNotificationCached]);
 
-	function closeModal(mode: "create" | "update") {
-		if (mode === "create") {
-			setModalCreateIsOpen(false);
-		} else {
-			setModalUpdateIsOpen(false);
-		}
-	}
-
-	function openModal(mode: "create" | "update") {
+	const openModalCached = useCallback((mode: "create" | "update") => {
 		if (mode === "create") {
 			setModalCreateIsOpen(true);
 		} else {
 			setModalUpdateIsOpen(true);
 		}
-	}
+	}, []);
 
-	function clearFields() {
-		inputName.current!.value = "";
-		inputPhone.current!.value = "";
-		inputEmail.current!.value = "";
-	}
-
-	function handleDelete(contact: Contact) {
+	const handleDeleteCached = useCallback((contact: Contact) => {
 		const isConfirmed = confirm(
 			`Tem certeza que deseja excluir o contato do(a) ${contact.name}?`,
 		);
 
 		if (isConfirmed) {
-			setContacts(contacts.filter((c) => c.id !== contact.id));
+			setContacts((currentList) => currentList.filter((c) => c.id !== contact.id));
 		}
-	}
+	}, []);
 
-	function handleUpdate(contact: Contact) {
-		openModal("update");
-		setContactSelected(contact);
-	}
+	const handleUpdateCached = useCallback(
+		(contact: Contact) => {
+			openModalCached("update");
+			setContactSelected(contact);
+		},
+		[openModalCached],
+	);
 
-	function confirmUpdate() {
+	const confirmUpdateCached = useCallback(() => {
 		const indexFound = contacts.findIndex((c) => c.id === contactSelected.id);
 
 		setContacts((currentList) => {
@@ -126,17 +137,25 @@ export function Contacts() {
 			return currentList;
 		});
 
-		closeModal("update");
-		showNotification();
-	}
+		closeModalCached("update");
+		showNotificationCached();
+	}, [closeModalCached, contactSelected.id, contacts, showNotificationCached]);
 
-	function showNotification() {
-		notificationRef.current!.setAttribute("style", "display: block");
-
-		setTimeout(() => {
-			notificationRef.current!.removeAttribute("style");
-		}, 2000);
-	}
+	const listaTRs = useMemo(() => {
+		return contacts.map((contact) => (
+			<tr key={contact.id}>
+				<td>{contact.name}</td>
+				<td>{contact.phone}</td>
+				<td>{contact.email}</td>
+				<td>
+					<ActionButton onClick={() => handleDeleteCached(contact)}>Excluir</ActionButton>
+					<ActionButton onClick={() => handleUpdateCached(contact)}>
+						Atualizar
+					</ActionButton>
+				</td>
+			</tr>
+		));
+	}, [contacts, handleDeleteCached, handleUpdateCached]);
 
 	return (
 		<DefaultLayout>
@@ -153,34 +172,18 @@ export function Contacts() {
 							<th>Ações</th>
 						</tr>
 					</thead>
-					<tbody>
-						{contacts.map((contact) => (
-							<tr key={contact.id}>
-								<td>{contact.name}</td>
-								<td>{contact.phone}</td>
-								<td>{contact.email}</td>
-								<td>
-									<ActionButton onClick={() => handleDelete(contact)}>
-										Excluir
-									</ActionButton>
-									<ActionButton onClick={() => handleUpdate(contact)}>
-										Atualizar
-									</ActionButton>
-								</td>
-							</tr>
-						))}
-					</tbody>
+					<tbody>{listaTRs}</tbody>
 				</Table>
 			</Container>
 
-			<FloatButton onClick={() => openModal("create")}>+</FloatButton>
+			<FloatButton onClick={() => openModalCached("create")}>+</FloatButton>
 
 			<Modal
 				title='Novo Contato'
 				textButtonConfirm='Cadastrar'
-				actionConfirm={confirmCreate}
+				actionConfirm={confirmCreateCached}
 				isOpen={modalCreateIsOpen}
-				actionClose={() => closeModal("create")}
+				actionClose={() => closeModalCached("create")}
 			>
 				<Input
 					ref={inputName}
@@ -204,9 +207,9 @@ export function Contacts() {
 			<Modal
 				title='Atualizar Contato'
 				textButtonConfirm='Atualizar'
-				actionClose={() => closeModal("update")}
+				actionClose={() => closeModalCached("update")}
 				isOpen={modalUpdateIsOpen}
-				actionConfirm={confirmUpdate}
+				actionConfirm={confirmUpdateCached}
 			>
 				<Input
 					ref={inputName}
