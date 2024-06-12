@@ -1,0 +1,21 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// definição das tabelas que nosso DB terá
+model Produto {
+  id  Int @id @default(autoincrement())
+  descricao String @db.VarChar(200)
+  valorCusto Decimal @map("valor_custo") @db.Decimal(8, 2)
+  quantidadeEstoque Int @map("quantidade_estoque") @db.Integer
+  categoriaId Int @map("categoria_id") @db.Integer
+
+  @@map("produtos")
+}
+
