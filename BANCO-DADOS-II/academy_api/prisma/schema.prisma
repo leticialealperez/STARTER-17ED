@@ -19,7 +19,7 @@ model Student {
   deleted Boolean @db.Boolean @default(false)
   createdAt DateTime @db.Timestamp() @map("created_at") @default(now())
   updatedAt DateTime @db.Timestamp() @map("updated_at") @updatedAt
-  deletedAt DateTime @db.Timestamp() @map("deleted_at")
+  deletedAt DateTime? @db.Timestamp() @map("deleted_at")
 
   @@map("students")
 }
