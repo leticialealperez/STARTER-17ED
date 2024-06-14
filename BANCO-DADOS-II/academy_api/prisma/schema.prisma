@@ -1,0 +1,25 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Student {
+  id String @id @db.Uuid @default(uuid())
+  name String @db.VarChar(255)
+  documentIdentification String @db.VarChar(11) @unique @map("document_identification")
+  emailAddress String @db.VarChar(255) @unique @map("email_address")
+  age Int? @db.SmallInt 
+  password String @db.Text 
+  authToken String? @db.Text @map("auth_token")
+  deleted Boolean @db.Boolean @default(false)
+  createdAt DateTime @db.Timestamp() @map("created_at") @default(now())
+  updatedAt DateTime @db.Timestamp() @map("updated_at") @updatedAt
+  deletedAt DateTime @db.Timestamp() @map("deleted_at")
+
+  @@map("students")
+}
