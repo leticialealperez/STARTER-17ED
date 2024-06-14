@@ -64,7 +64,7 @@ export class StudentsController {
         }
     }
 
-    public static delete(req: Request, res: Response) {
+    public static async delete(req: Request, res: Response) {
         try {
             //..
         } catch(err) {

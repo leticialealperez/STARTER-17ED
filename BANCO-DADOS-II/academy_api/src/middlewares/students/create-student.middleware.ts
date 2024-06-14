@@ -1,3 +1,4 @@
+import { cpf } from 'cpf-cnpj-validator';
 import { NextFunction, Request, Response } from 'express';
 
 export class CreateStudentMiddleware {
@@ -29,6 +30,13 @@ export class CreateStudentMiddleware {
             return res.status(400).json({
                 ok: false,
                 message: "CPF é obrigatório."
+            });
+        }
+
+        if(!cpf.isValid(document)) {
+            return res.status(400).json({
+                ok: false,
+                message: "Informe um CPF válido."
             });
         }
 
