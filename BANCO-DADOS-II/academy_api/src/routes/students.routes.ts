@@ -11,9 +11,9 @@ export class StudentsRoutes {
        // definições de rotas para students
        router.post("/", [CreateStudentMiddleware.validate], StudentsController.create);
        router.get("/", StudentsController.list);
-       router.get("/:id", StudentsController.get);
-       router.put("/", StudentsController.update);
-       router.delete("/", StudentsController.delete);
+       router.get("/:studenId", StudentsController.get);
+       router.put("/:studenId", StudentsController.update);
+       router.delete("/:studenId", StudentsController.delete);
 
        return router;
     }

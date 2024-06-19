@@ -21,5 +21,28 @@ model Student {
   updatedAt DateTime @db.Timestamp() @map("updated_at") @updatedAt
   deletedAt DateTime? @db.Timestamp() @map("deleted_at")
 
+  address Address?
+
   @@map("students")
+}
+
+// Relação 1 - 1 (um aluno possui 1 endereço <=> 1 endereço pertence a 1 aluno)
+model Address {
+  id String @id @db.Uuid @default(uuid())
+  street String @db.VarChar(255)
+  addressNumber String @db.VarChar(255) @map("address_number")
+  zipCode String @db.VarChar(8) @map("zip_code")
+  complement String? @db.VarChar(255)
+  neighborhood String @db.VarChar(255)
+  city String @db.VarChar(255)
+  uf String @db.VarChar(2)
+  deleted Boolean @db.Boolean @default(false)
+  createdAt DateTime @db.Timestamp() @map("created_at") @default(now())
+  updatedAt DateTime @db.Timestamp() @map("updated_at") @updatedAt
+  deletedAt DateTime? @db.Timestamp() @map("deleted_at")
+  
+  studentId String @db.Uuid @map("student_id") @unique
+  student Student @relation(fields: [studentId], references: [id])
+
+  @@map("addresses")
 }
