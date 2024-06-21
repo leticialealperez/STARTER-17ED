@@ -21,7 +21,14 @@ model Student {
   updatedAt DateTime @db.Timestamp() @map("updated_at") @updatedAt
   deletedAt DateTime? @db.Timestamp() @map("deleted_at")
 
+  // 1-1
   address Address?
+
+  // 1-N
+  assessments Assessment[]
+
+  // 1-N
+  enrollments Enrollment[]
 
   @@map("students")
 }
@@ -46,3 +53,59 @@ model Address {
 
   @@map("addresses")
 }
+
+// Relations 1-N (um aluno possui 0..N avaliações <=> 1 avaliação pertence à 1 aluno)
+model Assessment {
+  id String @id @db.Uuid @default(uuid())
+  title String @db.VarChar(255)
+  rate Decimal @db.Decimal(3, 1)
+  deadline DateTime @db.Date()
+  deleted Boolean @db.Boolean @default(false)
+  createdAt DateTime @db.Timestamp() @map("created_at") @default(now())
+  updatedAt DateTime @db.Timestamp() @map("updated_at") @updatedAt
+  deletedAt DateTime? @db.Timestamp() @map("deleted_at")
+
+  studentId String @db.Uuid @map("student_id")
+  student Student @relation(fields: [studentId], references: [id])
+
+  @@map("assessments")
+}
+
+// Relations N-N
+model Class {
+  id String @id @db.Uuid @default(uuid())
+  name String @db.VarChar(255)
+  edition String @db.VarChar(255)
+  startDate DateTime @db.Date() @map("start_date")
+  endDate DateTime @db.Date() @map("end_date")
+  deleted Boolean @db.Boolean @default(false)
+  createdAt DateTime @db.Timestamp() @map("created_at") @default(now())
+  updatedAt DateTime @db.Timestamp() @map("updated_at") @updatedAt
+  deletedAt DateTime? @db.Timestamp() @map("deleted_at")
+  
+  // 1-N
+  enrollments Enrollment[]
+
+  @@map("classes")
+}
+
+// 1-N
+model Enrollment {
+  id String @id @db.Uuid @default(uuid())
+  situation EnrollmentSituation @default(ACTIVE)
+  studentId String @db.Uuid
+  classId String @db.Uuid
+  
+  student Student @relation(fields: [studentId], references: [id])
+  class Class @relation(fields: [classId], references: [id])
+
+  @@map("enrollments")
+}
+
+enum EnrollmentSituation {
+  ACTIVE
+  INACTIVE
+  CANCELLED
+  SUSPENDED
+}
+

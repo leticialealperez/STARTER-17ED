@@ -1,6 +1,9 @@
 import cors from 'cors';
 import 'dotenv/config';
 import express from 'express';
+import { AssessmentsRoutes } from './routes/assessments.routes';
+import { AuthRoutes } from './routes/auth.routes';
+import { EnrollmentsRoutes } from './routes/enrollments.routes';
 import { StudentsRoutes } from './routes/students.routes';
 
 
@@ -18,6 +21,9 @@ app.get("/", (_, res) => {
 });
 
 app.use("/students", StudentsRoutes.execute());
+app.use("/auth", AuthRoutes.execute());
+app.use("/assessments", AssessmentsRoutes.execute());
+app.use("/enrollments", EnrollmentsRoutes.execute());
 
 
 app.listen(process.env.PORT, () => {

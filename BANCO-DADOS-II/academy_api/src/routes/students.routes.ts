@@ -1,5 +1,7 @@
 import { Router } from 'express';
+import { AddressesController } from '../controllers/addresses.controller';
 import { StudentsController } from '../controllers/students.controller';
+import { AuthMiddleware } from '../middlewares/auth/auth.middleware';
 import { CreateStudentMiddleware } from '../middlewares/students/create-student.middleware';
 
 
@@ -14,6 +16,8 @@ export class StudentsRoutes {
        router.get("/:studenId", StudentsController.get);
        router.put("/:studenId", StudentsController.update);
        router.delete("/:studenId", StudentsController.delete);
+
+       router.post("/addresses", [AuthMiddleware.validate], AddressesController.create);
 
        return router;
     }
