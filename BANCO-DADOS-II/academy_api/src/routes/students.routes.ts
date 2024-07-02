@@ -1,25 +1,51 @@
 import { Router } from 'express';
-import { AddressesController } from '../controllers/addresses.controller';
-import { StudentsController } from '../controllers/students.controller';
-import { AuthMiddleware } from '../middlewares/auth/auth.middleware';
-import { CreateStudentMiddleware } from '../middlewares/students/create-student.middleware';
-
+import { StudentsController } from '../controllers';
+import {
+  CreateStudentMiddleware,
+  PaginationParamsMiddleware,
+  StudentIdFormatMiddleware,
+  UpdateStudentMiddleware,
+} from '../middlewares';
 
 export class StudentsRoutes {
+  public static execute(): Router {
+    const router = Router();
 
-    public static execute(): Router {
-       const router = Router();
+    router.post(
+      '/',
+      [
+        CreateStudentMiddleware.validateMissingFields,
+        CreateStudentMiddleware.validateFieldTypes,
+        CreateStudentMiddleware.validateFieldsValue,
+      ],
+      StudentsController.create,
+    );
+    router.get(
+      '/',
+      [PaginationParamsMiddleware.validate],
+      StudentsController.list,
+    );
+    router.get(
+      '/:studenId',
+      [StudentIdFormatMiddleware.validate],
+      StudentsController.get,
+    );
+    router.delete(
+      '/:studenId',
+      [StudentIdFormatMiddleware.validate],
+      StudentsController.delete,
+    );
 
-       // definições de rotas para students
-       router.post("/", [CreateStudentMiddleware.validate], StudentsController.create);
-       router.get("/", StudentsController.list);
-       router.get("/:studenId", StudentsController.get);
-       router.put("/:studenId", StudentsController.update);
-       router.delete("/:studenId", StudentsController.delete);
+    router.put(
+      '/:studenId',
+      [
+        StudentIdFormatMiddleware.validate,
+        UpdateStudentMiddleware.validateFieldTypes,
+        UpdateStudentMiddleware.validateFieldsValue,
+      ],
+      StudentsController.update,
+    );
 
-       router.post("/addresses", [AuthMiddleware.validate], AddressesController.create);
-
-       return router;
-    }
-
+    return router;
+  }
 }

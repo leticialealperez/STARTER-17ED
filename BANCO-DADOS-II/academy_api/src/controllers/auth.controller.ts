@@ -3,81 +3,66 @@ import { Request, Response } from 'express';
 import { prismaConnection } from '../database/prisma.connection';
 
 export class AuthController {
-    public static async login(req: Request, res: Response) {
-        try {
-            const { email, password } = req.body;
+  public static async login(req: Request, res: Response) {
+    try {
+      const { email, password } = req.body;
 
-            // lógica do login
-            const studentFound = await prismaConnection.student.findUnique({
-                where: {
-                    emailAddress: email,
-                    password: password,
-                }
-            });
+      const studentFound = await prismaConnection.student.findUnique({
+        where: {
+          emailAddress: email,
+          password: password,
+        },
+      });
 
-            if(!studentFound) {
-                return res.status(401).json({
-                    ok: false,
-                    message: "Credencias inválidas"
-                });
-            }
+      if (!studentFound) {
+        return res.status(401).json({
+          ok: false,
+          message: 'Credencias inválidas',
+        });
+      }
 
-            if(studentFound.authToken) {
-                return res.status(400).json({
-                    ok: false,
-                    message: "Usuário já autenticado"
-                }); 
-            }
+      const authToken = randomUUID();
 
+      await prismaConnection.student.update({
+        where: { id: studentFound.id },
+        data: { authToken },
+      });
 
-            const authToken = randomUUID();
-            
-            await prismaConnection.student.update({
-                where: { id: studentFound.id },
-                data: { authToken }
-            });
-
-            return res.status(200).json({
-                ok: true,
-                message: "Aluno autenticado",
-                authToken
-            });
-        } catch(err) {
-            return res.status(500).json({
-                ok: false,
-                message: `Ocorreu um erro inesperado. Erro: ${(err as Error).name} - ${(err as Error).message}`
-            });
-        }
+      return res.status(200).json({
+        ok: true,
+        message: 'Aluno autenticado',
+        authToken,
+      });
+    } catch (err) {
+      return res.status(500).json({
+        ok: false,
+        message: `Ocorreu um erro inesperado. Erro: ${(err as Error).name} - ${
+          (err as Error).message
+        }`,
+      });
     }
+  }
 
-    public static async logout(req: Request, res: Response) {
-        try {
-            const headers = req.headers;
+  public static async logout(req: Request, res: Response) {
+    try {
+      const { student } = req.body;
 
-            if(!headers.authorization) {
-                return res.status(401).json({
-                    ok: false,
-                    message: "Token é obrigatório"
-                });
-            }
+      await prismaConnection.student.update({
+        where: { id: student.id },
+        data: { authToken: null },
+      });
 
-            await prismaConnection.student.updateMany({
-                where: {
-                    authToken: headers.authorization
-                },
-                data: { authToken: null }
-            });
-
-            return res.status(200).json({
-                ok: true,
-                message: "Logout realizado com sucesso",
-            })
-
-        } catch(err) {
-            return res.status(500).json({
-                ok: false,
-                message: `Ocorreu um erro inesperado. Erro: ${(err as Error).name} - ${(err as Error).message}`
-            });
-        }
+      return res.status(200).json({
+        ok: true,
+        message: 'Logout realizado com sucesso',
+      });
+    } catch (err) {
+      return res.status(500).json({
+        ok: false,
+        message: `Ocorreu um erro inesperado. Erro: ${(err as Error).name} - ${
+          (err as Error).message
+        }`,
+      });
     }
+  }
 }

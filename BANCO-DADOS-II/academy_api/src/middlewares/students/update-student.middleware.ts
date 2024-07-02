@@ -1,22 +1,22 @@
 import { NextFunction, Request, Response } from 'express';
-import { ErrorNotification } from '../../errors/error-notification';
+import { ErrorNotification } from '../../errors';
 
-export class LoginMiddleware {
-  public static validateMissingFields(
+export class UpdateStudentMiddleware {
+  public static validateFieldTypes(
     req: Request,
     res: Response,
     next: NextFunction,
   ) {
-    const { email, password } = req.body;
+    const { name, age } = req.body;
 
     const notifications: Array<ErrorNotification> = [];
 
-    if (typeof email === 'undefined') {
-      notifications.push({ field: 'email', message: 'Campo obrigatório' });
+    if (name && typeof name !== 'string') {
+      notifications.push({ field: 'name', message: 'Dado inválido' });
     }
 
-    if (typeof password === 'undefined') {
-      notifications.push({ field: 'password', message: 'Campo obrigatório' });
+    if (age && typeof age !== 'number') {
+      notifications.push({ field: 'age', message: 'Dado inválido' });
     }
 
     if (notifications.length) {
@@ -30,23 +30,26 @@ export class LoginMiddleware {
     return next();
   }
 
-  public static validateFieldTypes(
+  public static validateFieldsValue(
     req: Request,
     res: Response,
     next: NextFunction,
   ) {
-    const { email, password } = req.body;
+    const { name, age } = req.body;
 
     const notifications: Array<ErrorNotification> = [];
 
-    if (typeof email !== 'string') {
-      notifications.push({ field: 'email', message: 'Dado inválido' });
+    if (name && name.length < 3) {
+      notifications.push({
+        field: 'name',
+        message: 'Nome deve conter no mínimo 3 caracteres',
+      });
     }
 
-    if (typeof password !== 'string') {
+    if (age && age < 18) {
       notifications.push({
-        field: 'password',
-        message: 'Dado inválido',
+        field: 'age',
+        message: 'Não são aceitos alunos menores de 18 anos',
       });
     }
 
