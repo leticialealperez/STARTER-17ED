@@ -14,6 +14,6 @@
 - [x] Add models classes and enrollments - Relation N-N example
 - [x] How to define enums with prisma
 - [x] Enroll a student in a class
+- [x] List assessments of student - PRIVATE
 - [ ] List students enrolled in a class - PRIVATE
 - [ ] List classes in which the student is enrolled - PUBLIC
-- [ ] List assessments of student - PRIVATE
