@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const InputGroupStyled = styled.div`
     margin: 12px 4px;
+    text-align: left;
 
     label {
         color: #3a3a3a;
