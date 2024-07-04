@@ -1,7 +1,10 @@
 import { isAxiosError } from "axios";
 import { academyApi } from "./api.cliente-http";
 
-interface Credentials {
+interface SignUpData {
+  name: string;
+  document: string;
+  age: number;
   email: string;
   password: string;
 }
@@ -12,9 +15,9 @@ export interface ResponseAuthAPI {
   authToken?: string;
 }
 
-export async function login(credentials: Credentials) {
+export async function signUp(signUpData: SignUpData) {
   try {
-    const resposta = await academyApi.post("/auth/login", credentials);
+    const resposta = await academyApi.post("/students", signUpData);
 
     return resposta.data as ResponseAuthAPI;
   } catch (err: unknown) {
@@ -25,7 +28,7 @@ export async function login(credentials: Credentials) {
     console.log(err);
     return {
       ok: false,
-      message: "Erro ao realizar login",
+      message: "Erro ao realizar cadastro",
     };
   }
 }
