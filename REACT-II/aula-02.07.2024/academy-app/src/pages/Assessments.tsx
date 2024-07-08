@@ -1,27 +1,35 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAssessments } from "../configs/services/academy-api/assessments.service";
+import { getAssessments } from '../configs/services/academy-api/assessments/assessments.service';
+import { Assessment } from '../configs/services/academy-api/assessments/assessments.types';
 
 export function Assessments() {
-  const [assessments, setAssessments] = useState([]);
+  const [assessments, setAssessments] = useState<Array<Assessment>>([]);
   const navigate = useNavigate();
 
   const authToken = localStorage.getItem("authToken");
 
-  async function listAssessments() {
-    const resultado = await getAssessments(authToken!);
-    setAssessments(resultado.data);
-  }
-
   useEffect(() => {
     if (!authToken) {
       navigate("/");
+    } else {
+      listAssessments(authToken);
     }
   }, [navigate, authToken]);
 
-  useEffect(() => {
-    listAssessments();
-  }, []);
+
+  async function listAssessments(authToken: string) {
+    const resultado = await getAssessments({ token: authToken });
+
+    if(!resultado.ok) {
+      alert(resultado.message);
+      return
+    }
+
+    setAssessments(resultado.data!);
+  }
+
+ 
 
   return (
     <>
@@ -40,8 +48,8 @@ export function Assessments() {
             return (
               <tr key={item.id}>
                 <td>{item.title}</td>
-                <td>{item.rate}</td>
-                <td>{item.deadline}</td>
+                <td>{Number(item.rate).toFixed(1)}</td>
+                <td>{new Date(item.deadline).toLocaleDateString("pt-BR", { dateStyle: 'short'})}</td>
               </tr>
             );
           })}

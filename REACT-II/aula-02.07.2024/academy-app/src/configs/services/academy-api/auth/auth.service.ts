@@ -1,25 +1,16 @@
 import { isAxiosError } from "axios";
-import { academyApi } from "./api.cliente-http";
-
-interface Credentials {
-  email: string;
-  password: string;
-}
-
-export interface ResponseAuthAPI {
-  ok: boolean;
-  message: string;
-  authToken?: string;
-}
+import { academyApi, ResponseAPI } from '../api.cliente-http';
+import { Credentials } from './auth.types';
 
 export async function login(credentials: Credentials) {
   try {
     const resposta = await academyApi.post("/auth/login", credentials);
 
-    return resposta.data as ResponseAuthAPI;
+    return resposta.data as ResponseAPI<string>;
   } catch (err: unknown) {
+
     if (isAxiosError(err)) {
-      return err.response?.data as ResponseAuthAPI;
+      return err.response!.data as ResponseAPI<undefined>;
     }
 
     console.log(err);

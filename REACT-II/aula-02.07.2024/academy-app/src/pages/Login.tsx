@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { CardStyled } from '../components/styled/CardStyled';
 import { InputGroupStyled } from '../components/styled/InputGroupStyled';
 import { WrapperStyled } from '../components/styled/WrapperStyled';
-import { login } from '../configs/services/academy-api/auth.service';
+import { login } from '../configs/services/academy-api/auth/auth.service';
 
 export function Login() {
     const navigate = useNavigate();

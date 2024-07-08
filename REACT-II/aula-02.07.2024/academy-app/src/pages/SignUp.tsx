@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { CardStyled } from "../components/styled/CardStyled";
 import { InputGroupStyled } from "../components/styled/InputGroupStyled";
 import { WrapperStyled } from "../components/styled/WrapperStyled";
-import { signUp } from "../configs/services/academy-api/students.service";
+import { signUp } from '../configs/services/academy-api/students/students.service';
 
 export function SignUp() {
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ export function SignUp() {
     event.preventDefault();
 
     const data = {
-      name: event.currentTarget.nameStudent.value,
+      name: event.currentTarget['name-student'].value,
       document: event.currentTarget.document.value,
       email: event.currentTarget.email.value,
       age: parseInt(event.currentTarget.age.value),
@@ -37,7 +37,7 @@ export function SignUp() {
         <form onSubmit={handleSubmit}>
           <InputGroupStyled>
             <label htmlFor="nameStudent">Nome</label>
-            <input type="text" name="nameStudent" id="nameStudent" required />
+            <input type="text" name="name-student" id="name-student" required />
           </InputGroupStyled>
 
           <InputGroupStyled>
