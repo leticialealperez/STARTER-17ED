@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FloatButtonStyled } from '../components/styled/FloatButtonStyled';
 import { PageTitleStyled } from '../components/styled/PageTitleStyled';
 import { PaginationStyled } from '../components/styled/PaginationStyled';
 import { TableStyled } from '../components/styled/TableStyled';
@@ -104,6 +105,8 @@ export function Assessments() {
           )}
         </div>
       </PaginationStyled>
+
+      <FloatButtonStyled>+</FloatButtonStyled>
     </Fragment>
   );
 }
