@@ -36,7 +36,7 @@ export function SignUp() {
 
         <form onSubmit={handleSubmit}>
           <InputGroupStyled>
-            <label htmlFor="nameStudent">Nome</label>
+            <label htmlFor="name-student">Nome</label>
             <input type="text" name="name-student" id="name-student" required />
           </InputGroupStyled>
 
@@ -58,12 +58,12 @@ export function SignUp() {
 
           <InputGroupStyled>
             <label htmlFor="age">Idade</label>
-            <input type="number" name="age" id="age" />
+            <input type="number" name="age" id="age" min={18} required/>
           </InputGroupStyled>
 
           <InputGroupStyled>
             <label htmlFor="password">Senha</label>
-            <input type="password" name="password" id="password" required />
+            <input type="password" name="password" id="password" required minLength={6}/>
           </InputGroupStyled>
 
           <InputGroupStyled>

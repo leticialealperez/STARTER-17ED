@@ -31,8 +31,7 @@ export function Login() {
             return;
         }
 
-        // se der bom
-        localStorage.setItem("authToken", JSON.stringify(resultado.authToken));
+        localStorage.setItem("authToken", JSON.stringify(resultado.data));
         (event.target as HTMLFormElement).reset();
 
         alert(resultado.message);
