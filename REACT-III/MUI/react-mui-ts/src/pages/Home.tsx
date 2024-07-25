@@ -1,179 +1,44 @@
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import DeslikeIcon from "@mui/icons-material/FavoriteBorder";
-import MenuIcon from "@mui/icons-material/Menu";
-import ShareIcon from "@mui/icons-material/Share";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import {
-  AppBar,
-  Badge,
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Container,
-  Grid,
-  IconButton,
-  Link,
-  Stack,
-  TextField,
-  Toolbar,
-  Typography,
-} from "@mui/material";
-import img from "../assets/imagem.jpg";
+import { Box, Container, Grid, Stack, TextField, Typography } from "@mui/material";
+import { useState } from "react";
+import { CardProduct } from "../components/functionals/Card";
+import { products } from "../configs/data/products.data";
+import { Product } from "../configs/interfaces/product";
 
 export function Home() {
-  return (
-    <Stack spacing={2}>
-      <AppBar position='static'>
-        <Toolbar component='nav'>
-          <IconButton size='large' edge='start' color='inherit' aria-label='menu' sx={{ mr: 2 }}>
-            <MenuIcon />
-          </IconButton>
+  const [listProducts, setListProducts] = useState<Product[]>(products);
 
-          <Typography variant='h6' sx={{ flexGrow: 1 }}>
-            News
+  function handleSearch(ev: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    if (!ev.target.value) {
+      setListProducts(products);
+      return;
+    }
+
+    setListProducts((current) =>
+      current.filter((p) => p.name.toUpperCase().includes(ev.target.value.toUpperCase())),
+    );
+  }
+
+  return (
+    <Container component='main' maxWidth='lg' sx={{ minHeight: "80vh" }}>
+      <Stack spacing={5}>
+        <Box component='section'>
+          <Typography variant='h1' textAlign='center' marginBottom={2}>
+            Shopping
           </Typography>
 
-          <IconButton size='large' edge='start' color='inherit' aria-label='menu' sx={{ mr: 2 }}>
-            <Badge badgeContent={4} color='secondary'>
-              <ShoppingCartIcon />
-            </Badge>
-          </IconButton>
-        </Toolbar>
-      </AppBar>
+          <TextField type='text' label='Busque por nome' fullWidth onChange={handleSearch} />
+        </Box>
 
-      <Container component='main' maxWidth='lg'>
-        <Stack spacing={4}>
-          <Box component='section'>
-            <Typography variant='h1' textAlign='center'>
-              Produtos
-            </Typography>
-
-            <TextField type='text' label='Busque por nome' fullWidth />
-          </Box>
-
-          <Box component='section'>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={6} lg={4}>
-                <Card>
-                  <CardMedia component='img' alt='green iguana' height='140' image={img} />
-
-                  <CardContent>
-                    <Typography gutterBottom variant='h5' component='div'>
-                      Lizard
-                    </Typography>
-                    <Typography variant='body2' color='text.secondary'>
-                      Lizards are a widespread group of squamate reptiles, with over 6,000 species,
-                      ranging across all continents except Antarctica
-                    </Typography>
-                  </CardContent>
-
-                  <CardActions>
-                    <IconButton size='small' color='primary'>
-                      <ShareIcon />
-                    </IconButton>
-                    <IconButton size='small' color='error'>
-                      <FavoriteIcon />
-                    </IconButton>
-                  </CardActions>
-                </Card>
+        <Box component='section'>
+          <Grid container spacing={3}>
+            {listProducts.map((product) => (
+              <Grid key={product.id} item xs={12} md={6} lg={4}>
+                <CardProduct product={product} />
               </Grid>
-
-              <Grid item xs={12} md={6} lg={4}>
-                <Card>
-                  <CardMedia component='img' alt='green iguana' height='140' image={img} />
-
-                  <CardContent>
-                    <Typography gutterBottom variant='h5' component='div'>
-                      Lizard
-                    </Typography>
-                    <Typography variant='body2' color='text.secondary'>
-                      Lizards are a widespread group of squamate reptiles, with over 6,000 species,
-                      ranging across all continents except Antarctica
-                    </Typography>
-                  </CardContent>
-
-                  <CardActions>
-                    <IconButton size='small' color='primary'>
-                      <ShareIcon />
-                    </IconButton>
-                    <IconButton size='small' color='error'>
-                      <DeslikeIcon />
-                    </IconButton>
-                  </CardActions>
-                </Card>
-              </Grid>
-
-              <Grid item xs={12} md={6} lg={4}>
-                <Card>
-                  <CardMedia component='img' alt='green iguana' height='140' image={img} />
-                  <CardContent>
-                    <Typography gutterBottom variant='h5' component='div'>
-                      Lizard
-                    </Typography>
-                    <Typography variant='body2' color='text.secondary'>
-                      Lizards are a widespread group of squamate reptiles, with over 6,000 species,
-                      ranging across all continents except Antarctica
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size='small'>Share</Button>
-                    <Button size='small'>Learn More</Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-
-              <Grid item xs={12} md={6} lg={4}>
-                <Card>
-                  <CardMedia component='img' alt='green iguana' height='140' image={img} />
-                  <CardContent>
-                    <Typography gutterBottom variant='h5' component='div'>
-                      Lizard
-                    </Typography>
-                    <Typography variant='body2' color='text.secondary'>
-                      Lizards are a widespread group of squamate reptiles, with over 6,000 species,
-                      ranging across all continents except Antarctica
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size='small'>Share</Button>
-                    <Button size='small'>Learn More</Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-
-              <Grid item xs={12} md={6} lg={4}>
-                <Card>
-                  <CardMedia component='img' alt='green iguana' height='140' image={img} />
-                  <CardContent>
-                    <Typography gutterBottom variant='h5' component='div'>
-                      Lizard
-                    </Typography>
-                    <Typography variant='body2' color='text.secondary'>
-                      Lizards are a widespread group of squamate reptiles, with over 6,000 species,
-                      ranging across all continents except Antarctica
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size='small'>Share</Button>
-                    <Button size='small'>Learn More</Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            </Grid>
-          </Box>
-        </Stack>
-      </Container>
-
-      <Container component='footer'>
-        <Typography variant='body2' color={"GrayText"} textAlign='center' marginTop={5}>
-          Copyright &copy;&nbsp;
-          <Link>Meu site</Link>&nbsp;
-          {new Date().getFullYear()}
-        </Typography>
-      </Container>
-    </Stack>
+            ))}
+          </Grid>
+        </Box>
+      </Stack>
+    </Container>
   );
 }
