@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Store } from "../..";
 
 // Define a type for the slice state
-interface CounterState {
+export interface CounterState {
   value: number;
 }
 
