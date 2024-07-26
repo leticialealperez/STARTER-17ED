@@ -9,6 +9,7 @@ export function Home() {
 
   function handleSearch(ev: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     if (!ev.target.value) {
+      //"I"
       setListProducts(products);
       return;
     }
@@ -31,11 +32,17 @@ export function Home() {
 
         <Box component='section'>
           <Grid container spacing={3}>
-            {listProducts.map((product) => (
-              <Grid key={product.id} item xs={12} md={6} lg={4}>
-                <CardProduct product={product} />
+            {!listProducts.length ? (
+              <Grid item xs={12} md={6} lg={4}>
+                <Typography>Nenhum produto encontrado</Typography>
               </Grid>
-            ))}
+            ) : (
+              listProducts.map((product) => (
+                <Grid item key={product.id} xs={12} md={6} lg={4}>
+                  <CardProduct product={product} />
+                </Grid>
+              ))
+            )}
           </Grid>
         </Box>
       </Stack>

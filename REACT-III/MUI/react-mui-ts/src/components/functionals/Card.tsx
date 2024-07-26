@@ -15,6 +15,8 @@ import {
 import { useState } from "react";
 import { Product } from "../../configs/interfaces/product";
 import { currencyFormatter } from "../../configs/utils/currency-formatter";
+import { useAppDispatch } from "../../store/hooks";
+import { decrementar } from "../../store/modules/counter/counterSlice";
 
 interface CardProductProps {
   product: Product;
@@ -22,12 +24,15 @@ interface CardProductProps {
 
 export function CardProduct(props: CardProductProps) {
   const [quantity, setQuantity] = useState(1);
+
+  const dispatch = useAppDispatch();
+
   return (
     <Card>
       <CardMedia
         component='img'
         alt='image of product'
-        height='140'
+        height='150'
         image={props.product.imageUrl}
       />
 
@@ -69,8 +74,15 @@ export function CardProduct(props: CardProductProps) {
               </IconButton>
             </Stack>
           </Grid>
-          <Grid item xs={12} textAlign='center'>
-            <Button color='primary' variant='contained' fullWidth>
+          <Grid item xs={12}>
+            <Button
+              color='primary'
+              variant='contained'
+              fullWidth
+              onClick={() => {
+                dispatch(decrementar());
+              }}
+            >
               Comprar
             </Button>
           </Grid>

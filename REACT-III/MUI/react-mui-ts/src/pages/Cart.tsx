@@ -20,6 +20,7 @@ export function Cart() {
       <Typography variant='h4' textAlign='center'>
         Carrinho de compras
       </Typography>
+
       <Stack marginTop={5} spacing={5}>
         <Stepper activeStep={0} alternativeLabel>
           {steps.map((label) => (
@@ -48,9 +49,11 @@ export function Cart() {
               ))}
             </List>
           </Grid>
+
           <Grid item xs={12} sm={9}>
             <Divider variant='fullWidth' sx={{ borderColor: "#3a3a3a" }} />
           </Grid>
+
           <Grid item xs={12} sm={9} marginTop={1}>
             <Typography variant='h5' textAlign='end'>
               Subtotal (3 produtos): R$10.545,00

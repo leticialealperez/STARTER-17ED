@@ -35,6 +35,7 @@ export function ListItemCart({ product, showDivider }: ListItemCartProps) {
         <ListItemAvatar>
           <Avatar alt={product.name} src={product.imageUrl} />
         </ListItemAvatar>
+
         <ListItemText
           primary={product.name}
           secondary={
@@ -47,9 +48,11 @@ export function ListItemCart({ product, showDivider }: ListItemCartProps) {
                   {showAllDescription ? "Ver menos" : "Ver mais"}
                 </Link>
               </Typography>
+
               <Typography variant='subtitle2'>
                 Preço: {currencyFormatter.format(product.price)}
               </Typography>
+
               <Typography variant='subtitle2'>Qtd: 1</Typography>
             </Fragment>
           }
