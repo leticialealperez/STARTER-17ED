@@ -16,7 +16,7 @@ import { useState } from "react";
 import { Product } from "../../configs/interfaces/product";
 import { currencyFormatter } from "../../configs/utils/currency-formatter";
 import { useAppDispatch } from "../../store/hooks";
-import { decrementar } from "../../store/modules/counter/counterSlice";
+import { addItem } from "../../store/modules/cart/cartSlice";
 
 interface CardProductProps {
   product: Product;
@@ -80,7 +80,12 @@ export function CardProduct(props: CardProductProps) {
               variant='contained'
               fullWidth
               onClick={() => {
-                dispatch(decrementar());
+                dispatch(
+                  addItem({
+                    quantity: quantity,
+                    product: props.product,
+                  }),
+                );
               }}
             >
               Comprar

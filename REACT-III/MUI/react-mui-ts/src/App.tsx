@@ -4,14 +4,17 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { CssBaseline } from "@mui/material";
 import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 import { AppRoutes } from "./routes/AppRoutes";
-import { store } from "./store";
+import { persistor, store } from "./store";
 
 export function App() {
   return (
     <Provider store={store}>
-      <CssBaseline />
-      <AppRoutes />
+      <PersistGate persistor={persistor}>
+        <CssBaseline />
+        <AppRoutes />
+      </PersistGate>
     </Provider>
   );
 }

@@ -1,14 +1,22 @@
 import HomeIcon from "@mui/icons-material/Home";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { AppBar, Badge, IconButton, Toolbar, Typography } from "@mui/material";
+import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../store/hooks";
-import { selectCount } from "../../store/modules/counter/counterSlice";
+import { selectCart } from "../../store/modules/cart/cartSlice";
 
 export function Navbar() {
   const navigate = useNavigate();
 
-  const count = useAppSelector(selectCount);
+  const cart = useAppSelector(selectCart);
+
+  // useMemo - memoiza(mantem em cache) o resultado/retorno de uma função
+  const qtdTotalProducts = useMemo(() => {
+    const total = cart.orders.reduce((acc, order) => acc + order.quantity, 0);
+
+    return total;
+  }, [cart.orders]);
 
   return (
     <AppBar position='static'>
@@ -37,7 +45,7 @@ export function Navbar() {
           onClick={() => navigate("/cart")}
         >
           <Badge
-            badgeContent={`${count.value}`}
+            badgeContent={`${qtdTotalProducts}`}
             color='error'
             sx={{ "& .MuiBadge-badge": { right: -6 } }}
           >
