@@ -1,8 +1,7 @@
 import AddIcon from "@mui/icons-material/Add";
 import { Fab } from "@mui/material";
-import { v4 as randomUUID } from "uuid";
 import { useAppDispatch } from "../../store/hooks";
-import { addAssessment } from "../../store/modules/assessments/assessmentsSlice";
+import { setModal } from "../../store/modules/modal/modalSlice";
 
 export function FloatButton() {
   const dispatch = useAppDispatch();
@@ -12,14 +11,7 @@ export function FloatButton() {
       aria-label='add'
       sx={{ position: "fixed", right: "45px", bottom: "30px" }}
       onClick={() => {
-        dispatch(
-          addAssessment({
-            id: randomUUID(),
-            title: "Atividade Exemplo",
-            rate: 10,
-            deadline: new Date(),
-          }),
-        );
+        dispatch(setModal({ mode: "create", open: true }));
       }}
     >
       <AddIcon />
