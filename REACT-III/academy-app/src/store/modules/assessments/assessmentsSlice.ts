@@ -5,7 +5,7 @@ export interface Assessment {
   id: string;
   title: string;
   rate: number;
-  deadline: Date;
+  deadline: string;
 }
 
 const assessmentsAdapter = createEntityAdapter({

@@ -35,7 +35,7 @@ export function Modal() {
                 id: uuid(),
                 title: event.currentTarget["title-assessment"].value,
                 rate: Number(event.currentTarget["rate-assessment"].value),
-                deadline: new Date(event.currentTarget["deadline-assessment"].value),
+                deadline: event.currentTarget["deadline-assessment"].value,
               }),
             );
           } else {
@@ -46,7 +46,7 @@ export function Modal() {
                   changes: {
                     title: event.currentTarget["title-assessment"].value,
                     rate: Number(event.currentTarget["rate-assessment"].value),
-                    deadline: new Date(event.currentTarget["deadline-assessment"].value),
+                    deadline: event.currentTarget["deadline-assessment"].value,
                   },
                 }),
               );
@@ -99,11 +99,7 @@ export function Modal() {
           focused
           fullWidth
           variant='standard'
-          defaultValue={
-            modal.defaultValuesInput
-              ? modal.defaultValuesInput.deadline.toISOString().split("T")[0]
-              : ""
-          }
+          defaultValue={modal.defaultValuesInput ? modal.defaultValuesInput.deadline : ""}
         />
       </DialogContent>
       <DialogActions>
