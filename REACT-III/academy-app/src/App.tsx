@@ -1,4 +1,5 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
+import { SnackbarProvider } from "notistack"; // npm install notistack
 import { darkTheme } from "./configs/themes/dark.theme";
 import { lightTheme } from "./configs/themes/light.theme";
 import { AppRouter } from "./routes/AppRoutes";
@@ -10,8 +11,10 @@ export function App() {
 
   return (
     <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
-      <CssBaseline />
-      <AppRouter />
+      <SnackbarProvider>
+        <CssBaseline />
+        <AppRouter />
+      </SnackbarProvider>
     </ThemeProvider>
   );
 }
