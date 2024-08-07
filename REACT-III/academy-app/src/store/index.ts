@@ -16,7 +16,7 @@ const persistedReducers = persistReducer(
   {
     key: "theme",
     storage: localStorage,
-    whitelist: ["theme", "assessments"],
+    whitelist: ["theme", "assessments", "userLogged"],
   },
   rootReducer,
 );

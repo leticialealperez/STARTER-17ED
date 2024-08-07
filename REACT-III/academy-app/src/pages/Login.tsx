@@ -13,24 +13,26 @@ import {
   Typography,
 } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
+import { useAppDispatch } from "../store/hooks";
+import { fetchLogin } from "../store/modules/userLogged/userLoggedSlice";
 import { isEmailValid, isPasswordValid } from "../utils";
 
 export function Login() {
+  const dispatch = useAppDispatch();
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const email = event.currentTarget.email.value;
     const password = event.currentTarget.password.value;
 
     if (!isEmailValid(email) || !isPasswordValid(password)) {
-      enqueueSnackbar("Credenciais inválidas", {
+      enqueueSnackbar("Campos inválidos", {
         variant: "error",
       });
       return;
     }
 
-    enqueueSnackbar("Usuario logado com sucesso!", {
-      variant: "success",
-    });
+    dispatch(fetchLogin({ email, password }));
   };
   return (
     <Container component='main'>

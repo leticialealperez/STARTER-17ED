@@ -5,8 +5,17 @@ export interface Assessment {
   id: string;
   title: string;
   rate: number;
-  deadline: string;
+  deadline: string; // 2024-08-06 ISO8601 primitivos
 }
+
+/*
+
+assessments: {
+  ids: [],
+  entities: {}
+}
+
+*/
 
 const assessmentsAdapter = createEntityAdapter({
   selectId: (assessment: Assessment) => assessment.id, // quando é "id" é opcional essa config

@@ -26,6 +26,9 @@ export function Card(props: CardProps) {
           {props.assessment.title}
         </Typography>
         <Typography sx={{ mb: 1.5 }} color='text.secondary' variant='caption' component='p'>
+          {/* {new Date(`${props.assessment.deadline}T00:00:00`).toLocaleDateString("pt-BR", {
+            dateStyle: "full",
+          })} */}
           {new Date(`${props.assessment.deadline}T00:00:00`).toLocaleDateString("pt-BR", {
             dateStyle: "full",
           })}
