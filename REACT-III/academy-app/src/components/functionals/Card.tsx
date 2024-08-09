@@ -33,7 +33,7 @@ export function Card(props: CardProps) {
             dateStyle: "full",
           })}
         </Typography>
-        <Typography variant='body1'>Nota: {props.assessment.rate.toFixed(1)}</Typography>
+        <Typography variant='body1'>Nota: {Number(props.assessment.rate).toFixed(1)}</Typography>
       </CardContent>
 
       <CardActions>

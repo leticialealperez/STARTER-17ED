@@ -1,20 +1,9 @@
 import { isAxiosError } from "axios";
 import { academyApi } from "./client-http";
+import { ResponseAPI } from "./response-api.interface";
 
-interface ResponseAPI<Type> {
-  ok: boolean;
-  message: string;
-  data?: Type;
-  errors?: Array<{
-    field: string;
-    message: string;
-  }>;
-}
-
-// ESTADOS DE UMA PROMISE - aquela função/rotina que acontece de forma assincrona - fora do ciclo de execução normal
-// pending   - ESTA EM PROCESSAMENTO/PENDENTE
-// fulfilled - OK/RESOLVIDA
-// reject    - NÃO-OK/RECUSADA
+// A camada da aplicação responsavel pela:
+// COMUNICAÇÃO COM OS ENDPOINTS DAS APIS A SEREM INTEGRADAS
 
 // função de login
 export async function loginService(email: string, password: string): Promise<ResponseAPI<string>> {
@@ -42,3 +31,29 @@ export async function loginService(email: string, password: string): Promise<Res
 }
 
 // função de logout
+export async function logoutService(token: string): Promise<ResponseAPI<undefined>> {
+  try {
+    const response = await academyApi.post(
+      "/auth/logout",
+      {},
+      {
+        headers: {
+          Authorization: token,
+        },
+      },
+    );
+
+    return response.data;
+  } catch (err) {
+    if (isAxiosError(err)) {
+      // Quando a api retorna qualquer tipo de erro
+      return err.response?.data;
+    }
+
+    // Ou quando o dev codou errado
+    return {
+      ok: false,
+      message: "Aconteceu um erro inesperado",
+    };
+  }
+}

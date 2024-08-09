@@ -1,23 +1,12 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { enqueueSnackbar } from "notistack";
-import { loginService } from "../../../configs/services/auth.service";
+import { GlobalState } from "../..";
+import { fetchLogin, fetchLogout } from "./userLogged.actions";
 
-interface Credentials {
-  email: string;
-  password: string;
-}
-
-export const fetchLogin = createAsyncThunk("userLogged/login", async (credentials: Credentials) => {
-  // lógica de chamada ao service e toda validação necessária antes de setar o estado de userLogged
-  const result = await loginService(credentials.email, credentials.password);
-
-  return {
-    isLogged: result.ok,
-    authToken: result.data ?? "",
-    emailUser: result.ok ? credentials.email : "",
-    message: result.message,
-  };
-});
+// ESTADOS DE UMA PROMISE - aquela função/rotina que acontece de forma assincrona - fora do ciclo de execução normal
+// pending   - ESTA EM PROCESSAMENTO/PENDENTE
+// fulfilled - OK/RESOLVIDA
+// reject    - NÃO-OK/RECUSADA
 
 export interface UserLoggedState {
   logged: boolean;
@@ -37,6 +26,8 @@ const userLoggedSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     /*
+      ex: criação de um loading
+
         builder.addCase(login.pending, (state, action) => {
         // toda lógica de modificação de user-logged para quando a requisição estiver sendo processada (carregando)
         });
@@ -54,11 +45,25 @@ const userLoggedSlice = createSlice({
     });
 
     /*
-        builder.addCase(login.rejected, (state, action) => {
-            // aqui executa somente se a lógica do thunk estourar uma exceção
-        });
+      // aqui seria equivalente ao catch de uma promise
+      builder.addCase(login.rejected, (state, action) => {
+          // aqui executa somente se a lógica do thunk estourar uma exceção
+      });
     */
+
+    builder.addCase(fetchLogout.fulfilled, (state, action) => {
+      if (action.payload.logoutIsOk) {
+        state.logged = initialState.logged;
+        state.emailUser = initialState.emailUser;
+        state.authToken = initialState.authToken;
+      }
+
+      enqueueSnackbar(action.payload.message, {
+        variant: action.payload.logoutIsOk ? "success" : "error",
+      });
+    });
   },
 });
 
 export const userLoggedReducer = userLoggedSlice.reducer;
+export const selectUserLogged = (state: GlobalState) => state.userLogged;
