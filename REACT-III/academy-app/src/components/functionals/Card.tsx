@@ -1,18 +1,28 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import { CardActions, CardContent, Card as CardMUI, IconButton, Typography } from "@mui/material";
-import { useAppDispatch } from "../../store/hooks";
-import { Assessment, deleteAssessment } from "../../store/modules/assessments/assessmentsSlice";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { deleteAssessment } from "../../store/modules/assessments/assessments.actions";
+import { Assessment } from "../../store/modules/assessments/assessmentsSlice";
 import { setModal } from "../../store/modules/modal/modalSlice";
+import { selectUserLogged } from "../../store/modules/userLogged/userLoggedSlice";
 
 interface CardProps {
   assessment: Assessment;
 }
 export function Card(props: CardProps) {
+  const userLogged = useAppSelector(selectUserLogged);
   const dispatch = useAppDispatch();
 
   function handleDelete() {
-    dispatch(deleteAssessment(props.assessment.id));
+    dispatch(
+      deleteAssessment({
+        token: userLogged.authToken,
+        body: {
+          id: props.assessment.id,
+        },
+      }),
+    );
   }
 
   function handleUpdate() {

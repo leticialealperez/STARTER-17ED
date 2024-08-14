@@ -65,3 +65,38 @@ SUCESSO
 
 
 
+CREATE POST /assessments
+request.headers.authorization = <token>
+
+
+request.body 
+{
+    title: "", 
+    rate: 10, 
+    deadline: "2024-08-13" 
+}
+
+quando sucesso response.data.data - Um assessment - o que foi criado
+
+
+UPDATE put /assessments/<id>
+request.headers.authorization = <token>
+
+request.body 
+{
+    title: "", 
+    rate: 10, 
+    deadline: "2024-08-13" 
+}
+
+quando sucesso response.data.data - Um assessment - o que foi atualizado
+
+
+DELETE delete /assessments/<id>
+request.headers.authorization = <token>
+quando sucesso response.data.data - Um assessment - o que foi excluido
+
+
+
+
+
