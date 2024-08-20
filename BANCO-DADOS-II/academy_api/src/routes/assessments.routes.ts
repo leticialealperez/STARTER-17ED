@@ -1,10 +1,11 @@
 import { Router } from 'express';
 import { AssessmentsController } from '../controllers';
 import {
-  AssessmentIdFormatMiddleware,
   AuthMiddleware,
   CreateAssessmentMiddleware,
   PaginationParamsMiddleware,
+  UpdateAssessmentMiddleware,
+  ValidateIdFormatMiddleware,
 } from '../middlewares';
 
 export class AssessmentsRoutes {
@@ -27,18 +28,23 @@ export class AssessmentsRoutes {
       AssessmentsController.list,
     );
     router.get(
-      '/assessmentId',
-      [AuthMiddleware.validate, AssessmentIdFormatMiddleware.validate],
+      '/:id',
+      [AuthMiddleware.validate, ValidateIdFormatMiddleware.validate],
       AssessmentsController.get,
     );
     router.put(
-      '/assessmentId',
-      [AuthMiddleware.validate, AssessmentIdFormatMiddleware.validate],
+      '/:id',
+      [
+        AuthMiddleware.validate,
+        ValidateIdFormatMiddleware.validate,
+        UpdateAssessmentMiddleware.validateFieldTypes,
+        UpdateAssessmentMiddleware.validateFieldsValue,
+      ],
       AssessmentsController.update,
     );
     router.delete(
-      '/assessmentId',
-      [AuthMiddleware.validate, AssessmentIdFormatMiddleware.validate],
+      '/:id',
+      [AuthMiddleware.validate, ValidateIdFormatMiddleware.validate],
       AssessmentsController.delete,
     );
 

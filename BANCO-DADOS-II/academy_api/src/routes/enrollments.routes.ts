@@ -1,15 +1,31 @@
 import { Router } from 'express';
 import { EnrollmentsController } from '../controllers';
-import { AuthMiddleware } from '../middlewares';
+import {
+  AuthMiddleware,
+  CreateEnrollmentMiddleware,
+  PaginationParamsMiddleware,
+} from '../middlewares';
 
 export class EnrollmentsRoutes {
   public static execute(): Router {
     const router = Router();
 
-    router.post('/', [AuthMiddleware.validate], EnrollmentsController.create);
+    router.post(
+      '/',
+      [
+        AuthMiddleware.validate,
+        CreateEnrollmentMiddleware.validateMissingFields,
+        CreateEnrollmentMiddleware.validateFieldTypes,
+        CreateEnrollmentMiddleware.validateFieldsValue,
+      ],
+      EnrollmentsController.create,
+    );
 
-    // listagem das turmas em que o aluno logado está matriculado
-    router.get('/', [AuthMiddleware.validate]);
+    router.get(
+      '/',
+      [AuthMiddleware.validate, PaginationParamsMiddleware.validate],
+      EnrollmentsController.list,
+    );
 
     return router;
   }

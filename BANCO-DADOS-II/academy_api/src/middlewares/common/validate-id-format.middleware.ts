@@ -2,15 +2,15 @@ import { NextFunction, Request, Response } from 'express';
 import { validate as validateUUID } from 'uuid';
 import { ErrorNotification } from '../../errors';
 
-export class AssessmentIdFormatMiddleware {
+export class ValidateIdFormatMiddleware {
   public static validate(req: Request, res: Response, next: NextFunction) {
-    const { assessmentId } = req.params;
+    const { id } = req.params;
 
     const notifications: Array<ErrorNotification> = [];
 
-    if (!validateUUID(assessmentId)) {
+    if (!validateUUID(id)) {
       notifications.push({
-        field: 'assessmentId',
+        field: 'id',
         message: 'Formato de parâmetro inválido',
       });
     }

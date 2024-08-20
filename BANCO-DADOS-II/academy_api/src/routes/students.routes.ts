@@ -3,8 +3,8 @@ import { StudentsController } from '../controllers';
 import {
   CreateStudentMiddleware,
   PaginationParamsMiddleware,
-  StudentIdFormatMiddleware,
   UpdateStudentMiddleware,
+  ValidateIdFormatMiddleware,
 } from '../middlewares';
 
 export class StudentsRoutes {
@@ -26,20 +26,20 @@ export class StudentsRoutes {
       StudentsController.list,
     );
     router.get(
-      '/:studenId',
-      [StudentIdFormatMiddleware.validate],
+      '/:id',
+      [ValidateIdFormatMiddleware.validate],
       StudentsController.get,
     );
     router.delete(
-      '/:studenId',
-      [StudentIdFormatMiddleware.validate],
+      '/:id',
+      [ValidateIdFormatMiddleware.validate],
       StudentsController.delete,
     );
 
     router.put(
-      '/:studenId',
+      '/:id',
       [
-        StudentIdFormatMiddleware.validate,
+        ValidateIdFormatMiddleware.validate,
         UpdateStudentMiddleware.validateFieldTypes,
         UpdateStudentMiddleware.validateFieldsValue,
       ],

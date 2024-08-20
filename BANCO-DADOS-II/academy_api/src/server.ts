@@ -4,6 +4,7 @@ import express from 'express';
 import {
   AssessmentsRoutes,
   AuthRoutes,
+  ClassesRoutes,
   EnrollmentsRoutes,
   StudentsRoutes,
 } from './routes';
@@ -22,6 +23,7 @@ app.get('/', (_, res) => {
 app.use('/students', StudentsRoutes.execute());
 app.use('/auth', AuthRoutes.execute());
 app.use('/assessments', AssessmentsRoutes.execute());
+app.use('/classes', ClassesRoutes.execute());
 app.use('/enrollments', EnrollmentsRoutes.execute());
 
 app.listen(process.env.PORT, () => {

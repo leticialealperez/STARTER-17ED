@@ -52,20 +52,6 @@ export class StudentsController {
         },
       });
 
-      if (!count) {
-        return res.status(200).json({
-          ok: true,
-          message: 'Alunos listados com sucesso',
-          data: [],
-          pagination: {
-            limit: limitDefault,
-            page: 1,
-            count: 0,
-            totalPages: 1,
-          },
-        });
-      }
-
       const students = await prismaConnection.student.findMany({
         skip: limitDefault * (pageDefault - 1),
         take: limitDefault,
@@ -80,7 +66,7 @@ export class StudentsController {
       return res.status(200).json({
         ok: true,
         message: 'Alunos listados com sucesso',
-        students: students,
+        data: students,
         pagination: {
           limit: limitDefault,
           page: pageDefault,
@@ -100,11 +86,11 @@ export class StudentsController {
 
   public static async get(req: Request, res: Response) {
     try {
-      const { studenId } = req.params;
+      const { id } = req.params;
 
       const studentFound = await prismaConnection.student.findUnique({
         where: {
-          id: studenId,
+          id: id,
           deleted: false,
         },
       });
@@ -133,12 +119,12 @@ export class StudentsController {
 
   public static async update(req: Request, res: Response) {
     try {
-      const { studenId } = req.params;
+      const { id } = req.params;
       const { name, age } = req.body;
 
       const studentUpdated = await prismaConnection.student.update({
         where: {
-          id: studenId,
+          id: id,
           deleted: false,
         },
         data: {
@@ -164,10 +150,10 @@ export class StudentsController {
 
   public static async delete(req: Request, res: Response) {
     try {
-      const { studenId } = req.params;
+      const { id } = req.params;
 
       const studentDeleted = await prismaConnection.student.update({
-        where: { id: studenId, deleted: false },
+        where: { id: id, deleted: false },
         data: { deleted: true, deletedAt: new Date() },
       });
 

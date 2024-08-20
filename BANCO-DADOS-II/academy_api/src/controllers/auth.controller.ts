@@ -31,7 +31,7 @@ export class AuthController {
       return res.status(200).json({
         ok: true,
         message: 'Aluno autenticado',
-        authToken,
+        data: authToken,
       });
     } catch (err) {
       return res.status(500).json({
