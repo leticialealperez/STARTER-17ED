@@ -1,16 +1,21 @@
 import { Request, Response } from 'express';
 import { prismaConnection } from '../database/prisma.connection';
+import { Bcrypt } from '../utils/bcrypt.util';
 
 export class StudentsController {
   public static async create(req: Request, res: Response) {
     try {
       const { name, age, document, email, password } = req.body;
 
+      // embaralhar a senha antes de salvar no banco de dados
+      const bcrypt = new Bcrypt();
+      const passwordHashed = await bcrypt.generateHash(password);
+
       const newStudent = await prismaConnection.student.create({
         data: {
           name,
           age,
-          password,
+          password: passwordHashed,
           documentIdentification: document,
           emailAddress: email,
         },
