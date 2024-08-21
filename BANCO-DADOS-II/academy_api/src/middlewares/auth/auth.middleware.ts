@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { prismaConnection } from '../../database/prisma.connection';
+import { JWT } from '../../utils/jwt.util';
 
 export class AuthMiddleware {
   public static async validate(
@@ -17,19 +17,18 @@ export class AuthMiddleware {
       });
     }
 
-    const studentFound = await prismaConnection.student.findFirst({
-      where: { authToken: headers.authorization },
-    });
+    const jwt = new JWT();
+    const payload = jwt.decodedToken(headers.authorization);
 
-    if (!studentFound) {
+    if (!payload) {
       return res.status(401).json({
         ok: false,
-        message: 'Usuário não autorizado',
+        message: 'Usuário não autenticado',
         errors: [],
       });
     }
 
-    req.body.student = studentFound;
+    req.body.student = payload;
 
     return next();
   }

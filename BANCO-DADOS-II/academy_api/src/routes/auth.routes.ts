@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { AuthController } from '../controllers';
-import { AuthMiddleware, LoginMiddleware } from '../middlewares';
+import { LoginMiddleware } from '../middlewares';
 
 export class AuthRoutes {
   public static execute(): Router {
@@ -14,7 +14,6 @@ export class AuthRoutes {
       ],
       AuthController.login,
     );
-    router.post('/logout', [AuthMiddleware.validate], AuthController.logout);
 
     return router;
   }

@@ -15,7 +15,6 @@ model Student {
   emailAddress String @db.VarChar(255) @unique @map("email_address")
   age Int? @db.SmallInt 
   password String @db.Text 
-  authToken String? @db.Text @map("auth_token")
   deleted Boolean @db.Boolean @default(false)
   createdAt DateTime @db.Timestamp() @map("created_at") @default(now())
   updatedAt DateTime @db.Timestamp() @map("updated_at") @updatedAt

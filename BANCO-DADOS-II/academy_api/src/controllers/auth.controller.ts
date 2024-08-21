@@ -1,6 +1,6 @@
-import { randomUUID } from 'crypto';
 import { Request, Response } from 'express';
 import { prismaConnection } from '../database/prisma.connection';
+import { JWT } from '../utils/jwt.util';
 
 export class AuthController {
   public static async login(req: Request, res: Response) {
@@ -21,17 +21,18 @@ export class AuthController {
         });
       }
 
-      const authToken = randomUUID();
+      const jwt = new JWT();
 
-      await prismaConnection.student.update({
-        where: { id: studentFound.id },
-        data: { authToken },
+      const token = jwt.generateToken({
+        id: studentFound.id,
+        name: studentFound.name,
+        email: studentFound.emailAddress,
       });
 
       return res.status(200).json({
         ok: true,
         message: 'Aluno autenticado',
-        data: authToken,
+        data: token,
       });
     } catch (err) {
       return res.status(500).json({
