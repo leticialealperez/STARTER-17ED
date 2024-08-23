@@ -4,6 +4,7 @@ interface StudentAuth {
   id: string;
   name: string;
   email: string;
+  type: 'M' | 'T' | 'F';
 }
 
 export class JWT {

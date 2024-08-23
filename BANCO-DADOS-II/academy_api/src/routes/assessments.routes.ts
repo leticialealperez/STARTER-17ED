@@ -3,6 +3,8 @@ import { AssessmentsController } from '../controllers';
 import {
   AuthMiddleware,
   CreateAssessmentMiddleware,
+  NotEnrolledMiddleware,
+  NotGraduatedMiddleware,
   PaginationParamsMiddleware,
   UpdateAssessmentMiddleware,
   ValidateIdFormatMiddleware,
@@ -16,6 +18,7 @@ export class AssessmentsRoutes {
       '/',
       [
         AuthMiddleware.validate,
+        NotGraduatedMiddleware.validate,
         CreateAssessmentMiddleware.validateMissingFields,
         CreateAssessmentMiddleware.validateFieldTypes,
         CreateAssessmentMiddleware.validateFieldsValue,
@@ -36,6 +39,8 @@ export class AssessmentsRoutes {
       '/:id',
       [
         AuthMiddleware.validate,
+        NotGraduatedMiddleware.validate,
+        NotEnrolledMiddleware.validate,
         ValidateIdFormatMiddleware.validate,
         UpdateAssessmentMiddleware.validateFieldTypes,
         UpdateAssessmentMiddleware.validateFieldsValue,
@@ -44,7 +49,12 @@ export class AssessmentsRoutes {
     );
     router.delete(
       '/:id',
-      [AuthMiddleware.validate, ValidateIdFormatMiddleware.validate],
+      [
+        AuthMiddleware.validate,
+        NotGraduatedMiddleware.validate,
+        NotEnrolledMiddleware.validate,
+        ValidateIdFormatMiddleware.validate,
+      ],
       AssessmentsController.delete,
     );
 

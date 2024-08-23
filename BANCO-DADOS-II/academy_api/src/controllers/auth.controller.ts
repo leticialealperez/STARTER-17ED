@@ -40,6 +40,7 @@ export class AuthController {
         id: studentFound.id,
         name: studentFound.name,
         email: studentFound.emailAddress,
+        type: studentFound.type,
       });
 
       return res.status(200).json({
