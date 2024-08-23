@@ -5,7 +5,7 @@ import { Bcrypt } from '../utils/bcrypt.util';
 export class StudentsController {
   public static async create(req: Request, res: Response) {
     try {
-      const { name, age, document, email, password } = req.body;
+      const { name, age, document, email, password, type } = req.body;
 
       // embaralhar a senha antes de salvar no banco de dados
       const bcrypt = new Bcrypt();
@@ -18,6 +18,7 @@ export class StudentsController {
           password: passwordHashed,
           documentIdentification: document,
           emailAddress: email,
+          type: type,
         },
       });
 

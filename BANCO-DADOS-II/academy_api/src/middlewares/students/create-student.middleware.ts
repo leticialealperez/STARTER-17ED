@@ -9,7 +9,7 @@ export class CreateStudentMiddleware {
     res: Response,
     next: NextFunction,
   ) {
-    const { name, age, document, email, password } = req.body;
+    const { name, age, document, email, password, type } = req.body;
 
     const notifications: Array<ErrorNotification> = [];
 
@@ -33,6 +33,10 @@ export class CreateStudentMiddleware {
       notifications.push({ field: 'password', message: 'Campo obrigatório' });
     }
 
+    if (typeof type === 'undefined') {
+      notifications.push({ field: 'type', message: 'Campo obrigatório' });
+    }
+
     if (notifications.length) {
       return res.status(400).json({
         ok: false,
@@ -49,7 +53,7 @@ export class CreateStudentMiddleware {
     res: Response,
     next: NextFunction,
   ) {
-    const { name, age, document, email, password } = req.body;
+    const { name, age, document, email, password, type } = req.body;
 
     const notifications: Array<ErrorNotification> = [];
 
@@ -73,6 +77,10 @@ export class CreateStudentMiddleware {
       notifications.push({ field: 'password', message: 'Dado inválido' });
     }
 
+    if (typeof type !== 'string') {
+      notifications.push({ field: 'type', message: 'Dado inválido' });
+    }
+
     if (notifications.length) {
       return res.status(400).json({
         ok: false,
@@ -89,7 +97,7 @@ export class CreateStudentMiddleware {
     res: Response,
     next: NextFunction,
   ) {
-    const { name, age, document, email, password } = req.body;
+    const { name, age, document, email, password, type } = req.body;
 
     const notifications: Array<ErrorNotification> = [];
 
@@ -125,6 +133,17 @@ export class CreateStudentMiddleware {
       notifications.push({
         field: 'password',
         message: 'Senha deve conter no mínimo 6 caracteres',
+      });
+    }
+
+    const studentTypes = ['T', 'F', 'M'];
+    const isMatch = studentTypes.some(type);
+
+    if (!isMatch) {
+      notifications.push({
+        field: 'type',
+        message:
+          'Deve ser informado T (tech helper), F (formado) ou M (matriculado)',
       });
     }
 
