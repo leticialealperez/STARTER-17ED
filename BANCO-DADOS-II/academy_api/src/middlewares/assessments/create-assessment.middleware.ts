@@ -1,5 +1,6 @@
 import { isValid } from 'date-fns';
 import { NextFunction, Request, Response } from 'express';
+import { validate } from 'uuid';
 import { ErrorNotification } from '../../errors';
 
 export class CreateAssessmentMiddleware {
@@ -40,7 +41,7 @@ export class CreateAssessmentMiddleware {
     res: Response,
     next: NextFunction,
   ) {
-    const { title, rate, deadline } = req.body;
+    const { title, rate, deadline, studentId } = req.body;
 
     const notifications: Array<ErrorNotification> = [];
 
@@ -72,7 +73,7 @@ export class CreateAssessmentMiddleware {
     res: Response,
     next: NextFunction,
   ) {
-    const { title, rate, deadline } = req.body;
+    const { title, rate, deadline, studentId, student } = req.body;
 
     const notifications: Array<ErrorNotification> = [];
 
@@ -94,6 +95,21 @@ export class CreateAssessmentMiddleware {
       notifications.push({
         field: 'deadline',
         message: 'Deve ser informado uma data válida',
+      });
+    }
+
+    if (student.type === 'M' && studentId) {
+      notifications.push({
+        field: 'studentId',
+        message:
+          'Você não possui permissão para cadastrar avaliações para outro aluno',
+      });
+    }
+
+    if (student.type === 'T' && studentId && !validate(studentId)) {
+      notifications.push({
+        field: 'studentId',
+        message: 'Deve ser informado uma ID válido',
       });
     }
 

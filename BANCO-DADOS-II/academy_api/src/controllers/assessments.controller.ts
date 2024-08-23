@@ -4,14 +4,27 @@ import { prismaConnection } from '../database/prisma.connection';
 export class AssessmentsController {
   public static async create(req: Request, res: Response) {
     try {
-      const { student, title, rate, deadline } = req.body;
+      const { student, title, rate, deadline, studentId } = req.body;
+
+      if (studentId) {
+        const studentFound = await prismaConnection.student.findUnique({
+          where: { id: studentId },
+        });
+
+        if (!studentFound) {
+          return res.status(404).json({
+            ok: false,
+            message: 'Aluno não encontrado pelo ID informado',
+          });
+        }
+      }
 
       const assessmentCreated = await prismaConnection.assessment.create({
         data: {
           deadline: new Date(deadline),
           rate: rate ?? 0,
           title: title,
-          studentId: student.id,
+          studentId: studentId ?? student.id,
         },
       });
 
@@ -47,11 +60,17 @@ export class AssessmentsController {
       }
 
       const count = await prismaConnection.assessment.count({
-        where: { studentId: student.id, deleted: false },
+        where: {
+          studentId: student.type !== 'T' ? student.id : undefined,
+          deleted: false,
+        },
       });
 
       const assessments = await prismaConnection.assessment.findMany({
-        where: { studentId: student.id, deleted: false },
+        where: {
+          studentId: student.type !== 'T' ? student.id : undefined,
+          deleted: false,
+        },
         orderBy: { createdAt: 'desc' },
         skip: limitDefault * (pageDefault - 1),
         take: limitDefault,
@@ -84,7 +103,11 @@ export class AssessmentsController {
       const { student } = req.body;
 
       const assessmentFound = await prismaConnection.assessment.findUnique({
-        where: { id: id, studentId: student.id, deleted: false },
+        where: {
+          id: id,
+          studentId: student.type !== 'T' ? student.id : undefined,
+          deleted: false,
+        },
       });
 
       if (!assessmentFound) {
@@ -112,10 +135,10 @@ export class AssessmentsController {
   public static async update(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const { student, title, rate, deadline } = req.body;
+      const { title, rate, deadline } = req.body;
 
       const assessmentFound = await prismaConnection.assessment.findUnique({
-        where: { id: id, studentId: student.id, deleted: false },
+        where: { id: id, deleted: false },
       });
 
       if (!assessmentFound) {
@@ -126,7 +149,7 @@ export class AssessmentsController {
       }
 
       const assessmentUpdated = await prismaConnection.assessment.update({
-        where: { id: id, studentId: student.id, deleted: false },
+        where: { id: assessmentFound.id },
         data: {
           title: title,
           rate: rate,
@@ -152,10 +175,9 @@ export class AssessmentsController {
   public static async delete(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const { student } = req.body;
 
       const assessmentFound = await prismaConnection.assessment.findUnique({
-        where: { id: id, studentId: student.id, deleted: false },
+        where: { id: id, deleted: false },
       });
 
       if (!assessmentFound) {
@@ -166,7 +188,7 @@ export class AssessmentsController {
       }
 
       const assessmentDeleted = await prismaConnection.assessment.update({
-        where: { id: id, studentId: student.id, deleted: false },
+        where: { id: assessmentFound.id },
         data: { deleted: true, deletedAt: new Date() },
       });
 
