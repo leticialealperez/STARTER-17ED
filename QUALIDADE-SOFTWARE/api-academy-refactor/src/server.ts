@@ -1,6 +1,8 @@
 import cors from 'cors';
 import 'dotenv/config';
 import express from 'express';
+import swaggerUI from 'swagger-ui-express';
+import swaggerDoc from './docs/swagger.json';
 import {
   AssessmentsRoutes,
   AuthRoutes,
@@ -19,6 +21,9 @@ app.get('/', (_, res) => {
     ok: true,
   });
 });
+
+app.use('/docs', swaggerUI.serve);
+app.get('/docs', swaggerUI.setup(swaggerDoc)); // UI
 
 app.use('/students', StudentsRoutes.execute());
 app.use('/auth', AuthRoutes.execute());

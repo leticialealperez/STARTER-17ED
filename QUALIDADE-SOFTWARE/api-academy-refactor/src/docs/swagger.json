@@ -1,0 +1,134 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Academy API",
+        "description": "Recursos para o controle e gerenciamentos academico de alunos da [Growdev](https://growdev.com.br).",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3030",
+            "description": "API Localhost"
+        },
+        {
+          "url": "https://exemplo.growdev.com",
+          "description": "API Produção"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Students",
+            "description": "Todas as funcionalidades para alunos"
+        }
+    ],
+    "paths": {
+        "/students": {
+            "get": {
+                "tags": ["Students"],
+                "summary": "Retorna a lista de alunos cadastrados",
+                "description": "Uma descrição opcional",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": false,
+                        "description": "Define o limite de registros de alunos a serem listados"
+                    },
+                    {
+                      "in": "query",
+                      "name": "page",
+                      "schema": {
+                        "type": "integer"
+                      },
+                      "required": false,
+                      "description": "Define a página de registros de alunos a ser mostrada"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Json com a lista de alunos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "ok": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Alunos listados com sucesso"
+                                        },
+                                        "data": {
+                                          "type": "array",
+                                          "items": {
+                                            "$ref": "#/components/schemas/Student"
+                                          }
+                                        },
+                                        "pagination": {
+                                            "$ref": "#/components/schemas/Pagination"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Student": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "3d0ca315-aff9-4fc2-be61-3b76b9a2d798"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "João da Silva"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "joao@email.com"
+                  },
+                  "documentIdentification": {
+                    "type": "string",
+                    "example": "012345678901"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["T", "M", "F"],
+                    "example": "T"
+                  }
+                }
+            },
+            "Pagination": {
+                "type": "object",
+                "properties": {
+                  "limit": {
+                    "type": "integer"
+                  },
+                  "page": {
+                    "type": "integer"
+                  },
+                  "totalPages": {
+                    "type": "integer"
+                  },
+                  "count": {
+                    "type": "integer"
+                  }
+                }
+            }
+        }
+    }
+}
