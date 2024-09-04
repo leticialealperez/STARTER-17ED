@@ -16,17 +16,21 @@ const fakeListStudents = StudentMock.buildFakeListStudents(11);
 
 describe('Testes de unidade para o método createStudent', () => {
   test('Deve lançar uma exceção se não existir nenhum aluno cadastrado', async () => {
+    // Arrange - Preparar o teste
     prismaMock.student.count.mockResolvedValue(0);
     const sut = new StudentService();
 
+    // Act     - Rodar o teste
     const result = sut.listAllStudents({});
 
+    // Assert  - Verificar as asserções
     expect(result).rejects.toThrow(
       new HttpError('Nenhum aluno encontrado', 404),
     );
   });
 
   test('Deve listar os últimos 10 alunos cadastrados quando parametros de paginação estiverem ausentes', async () => {
+    // Arrange - Preparar o teste
     const limitDefault = 10;
     const pageDefault = 1;
     const fakeListFirstPage = [...fakeListStudents].splice(
@@ -38,8 +42,10 @@ describe('Testes de unidade para o método createStudent', () => {
 
     const sut = new StudentService();
 
+    // Act     - Rodar o teste
     const result = await sut.listAllStudents({});
 
+    // Assert  - Verificar as asserções
     expect(result.pagination).toEqual({
       limit: limitDefault,
       page: pageDefault,
@@ -50,6 +56,7 @@ describe('Testes de unidade para o método createStudent', () => {
   });
 
   test('Deve listar conforme parametros de paginação', async () => {
+    // Arrange - Preparar o teste
     const limitToSet = 5;
     const pageToSet = 2;
     const fakeListOfPage = [...fakeListStudents].splice(
@@ -61,11 +68,13 @@ describe('Testes de unidade para o método createStudent', () => {
 
     const sut = new StudentService();
 
+    // Act     - Rodar o teste
     const result = await sut.listAllStudents({
       limit: limitToSet,
       page: pageToSet,
     });
 
+    // Assert  - Verificar as asserções
     expect(result.pagination).toEqual({
       limit: limitToSet,
       page: pageToSet,
