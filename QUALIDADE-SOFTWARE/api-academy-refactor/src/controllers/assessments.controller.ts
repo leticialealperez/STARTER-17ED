@@ -1,31 +1,20 @@
 import { Request, Response } from 'express';
-import { prismaConnection } from '../database/prisma.connection';
+import { HttpError } from '../errors';
+import { AssessmentService } from '../services';
 
 export class AssessmentsController {
-  public static async create(req: Request, res: Response) {
+  private readonly service = new AssessmentService();
+
+  public async create(req: Request, res: Response) {
     try {
       const { student, title, rate, deadline, studentId } = req.body;
 
-      if (studentId) {
-        const studentFound = await prismaConnection.student.findUnique({
-          where: { id: studentId },
-        });
-
-        if (!studentFound) {
-          return res.status(404).json({
-            ok: false,
-            message: 'Aluno não encontrado pelo ID informado',
-          });
-        }
-      }
-
-      const assessmentCreated = await prismaConnection.assessment.create({
-        data: {
-          deadline: new Date(deadline),
-          rate: rate ?? 0,
-          title: title,
-          studentId: studentId ?? student.id,
-        },
+      const assessmentCreated = await this.service.createAssessment({
+        deadline,
+        rate,
+        studentLogged: student,
+        title,
+        registerForStudentId: studentId,
       });
 
       return res.status(201).json({
@@ -34,176 +23,109 @@ export class AssessmentsController {
         data: assessmentCreated,
       });
     } catch (err) {
-      return res.status(500).json({
-        ok: false,
-        message: `Ocorreu um erro inesperado. Erro: ${(err as Error).name} - ${
-          (err as Error).message
-        }`,
-      });
+      return this.onError(err, res);
     }
   }
 
-  public static async list(req: Request, res: Response) {
+  public async list(req: Request, res: Response) {
     try {
       let { limit, page } = req.query;
       const { student } = req.body;
 
-      let limitDefault = 10;
-      let pageDefault = 1;
-
-      if (limit) {
-        limitDefault = Number(limit);
-      }
-
-      if (page) {
-        pageDefault = Number(page);
-      }
-
-      const count = await prismaConnection.assessment.count({
-        where: {
-          studentId: student.type !== 'T' ? student.id : undefined,
-          deleted: false,
-        },
+      const result = await this.service.listAllAssessments({
+        studentLogged: student,
+        limit: limit ? Number(limit) : undefined,
+        page: page ? Number(page) : undefined,
       });
 
-      const assessments = await prismaConnection.assessment.findMany({
-        where: {
-          studentId: student.type !== 'T' ? student.id : undefined,
-          deleted: false,
-        },
-        orderBy: { createdAt: 'desc' },
-        skip: limitDefault * (pageDefault - 1),
-        take: limitDefault,
-      });
-
-      return res.status(201).json({
+      return res.status(200).json({
         ok: true,
         message: 'Avaliações listadas com sucesso',
-        data: assessments,
-        pagination: {
-          limit: limitDefault,
-          page: pageDefault,
-          count: count,
-          totalPages: Math.ceil(count / limitDefault),
-        },
+        data: result.data,
+        pagination: result.pagination,
       });
     } catch (err) {
-      return res.status(500).json({
-        ok: false,
-        message: `Ocorreu um erro inesperado. Erro: ${(err as Error).name} - ${
-          (err as Error).message
-        }`,
-      });
+      return this.onError(err, res);
     }
   }
 
-  public static async get(req: Request, res: Response) {
+  public async get(req: Request, res: Response) {
     try {
       const { id } = req.params;
       const { student } = req.body;
 
-      const assessmentFound = await prismaConnection.assessment.findUnique({
-        where: {
-          id: id,
-          studentId: student.type !== 'T' ? student.id : undefined,
-          deleted: false,
-        },
+      const assessment = await this.service.getAssessmentById({
+        studentLogged: student,
+        assessmentId: id,
       });
 
-      if (!assessmentFound) {
-        return res.status(404).json({
-          ok: false,
-          message: 'Avaliação não encontrada na base de dados',
-        });
-      }
-
-      return res.status(201).json({
+      return res.status(200).json({
         ok: true,
         message: 'Avaliação encontrada com sucesso',
-        data: assessmentFound,
+        data: assessment,
       });
     } catch (err) {
-      return res.status(500).json({
-        ok: false,
-        message: `Ocorreu um erro inesperado. Erro: ${(err as Error).name} - ${
-          (err as Error).message
-        }`,
-      });
+      return this.onError(err, res);
     }
   }
 
-  public static async update(req: Request, res: Response) {
+  public async update(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const { title, rate, deadline } = req.body;
+      const { title, rate, deadline, student } = req.body;
 
-      const assessmentFound = await prismaConnection.assessment.findUnique({
-        where: { id: id, deleted: false },
+      const assessmentUpdated = await this.service.updateAssessment({
+        assessmentId: id,
+        studentLogged: student,
+        deadline: deadline ? new Date(deadline) : undefined,
+        rate,
+        title,
       });
 
-      if (!assessmentFound) {
-        return res.status(404).json({
-          ok: false,
-          message: 'Avaliação não encontrada na base de dados',
-        });
-      }
-
-      const assessmentUpdated = await prismaConnection.assessment.update({
-        where: { id: assessmentFound.id },
-        data: {
-          title: title,
-          rate: rate,
-          deadline: deadline,
-        },
-      });
-
-      return res.status(201).json({
+      return res.status(200).json({
         ok: true,
         message: 'Avaliação atualizada com sucesso',
         data: assessmentUpdated,
       });
     } catch (err) {
-      return res.status(500).json({
-        ok: false,
-        message: `Ocorreu um erro inesperado. Erro: ${(err as Error).name} - ${
-          (err as Error).message
-        }`,
-      });
+      return this.onError(err, res);
     }
   }
 
-  public static async delete(req: Request, res: Response) {
+  public async delete(req: Request, res: Response) {
     try {
       const { id } = req.params;
+      const { student } = req.body;
 
-      const assessmentFound = await prismaConnection.assessment.findUnique({
-        where: { id: id, deleted: false },
+      const assessmentDeleted = await this.service.deleteAssessment({
+        assessmentId: id,
+        studentLogged: student,
       });
 
-      if (!assessmentFound) {
-        return res.status(404).json({
-          ok: false,
-          message: 'Avaliação não encontrada na base de dados',
-        });
-      }
-
-      const assessmentDeleted = await prismaConnection.assessment.update({
-        where: { id: assessmentFound.id },
-        data: { deleted: true, deletedAt: new Date() },
-      });
-
-      return res.status(201).json({
+      return res.status(200).json({
         ok: true,
         message: 'Avaliação deletada com sucesso',
         data: assessmentDeleted,
       });
     } catch (err) {
-      return res.status(500).json({
+      return this.onError(err, res);
+    }
+  }
+
+  // Para não precisar ficar repetindo a todo momento este bloco no catch dos métodos
+  private onError(err: unknown, response: Response): Response {
+    if (err instanceof HttpError) {
+      return response.status(err.statusCode).json({
         ok: false,
-        message: `Ocorreu um erro inesperado. Erro: ${(err as Error).name} - ${
-          (err as Error).message
-        }`,
+        message: err.message,
       });
     }
+
+    return response.status(500).json({
+      ok: false,
+      message: `Ocorreu um erro inesperado. Erro: ${(err as Error).name} - ${
+        (err as Error).message
+      }`,
+    });
   }
 }

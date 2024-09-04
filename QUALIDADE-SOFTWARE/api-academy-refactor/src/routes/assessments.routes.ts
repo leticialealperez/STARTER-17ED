@@ -13,6 +13,7 @@ import {
 export class AssessmentsRoutes {
   public static execute(): Router {
     const router = Router();
+    const controller = new AssessmentsController();
 
     router.post(
       '/',
@@ -23,17 +24,17 @@ export class AssessmentsRoutes {
         CreateAssessmentMiddleware.validateFieldTypes,
         CreateAssessmentMiddleware.validateFieldsValue,
       ],
-      AssessmentsController.create,
+      controller.create,
     );
     router.get(
       '/',
       [AuthMiddleware.validate, PaginationParamsMiddleware.validate],
-      AssessmentsController.list,
+      controller.list,
     );
     router.get(
       '/:id',
       [AuthMiddleware.validate, ValidateIdFormatMiddleware.validate],
-      AssessmentsController.get,
+      controller.get,
     );
     router.put(
       '/:id',
@@ -45,7 +46,7 @@ export class AssessmentsRoutes {
         UpdateAssessmentMiddleware.validateFieldTypes,
         UpdateAssessmentMiddleware.validateFieldsValue,
       ],
-      AssessmentsController.update,
+      controller.update,
     );
     router.delete(
       '/:id',
@@ -55,7 +56,7 @@ export class AssessmentsRoutes {
         NotEnrolledMiddleware.validate,
         ValidateIdFormatMiddleware.validate,
       ],
-      AssessmentsController.delete,
+      controller.delete,
     );
 
     return router;

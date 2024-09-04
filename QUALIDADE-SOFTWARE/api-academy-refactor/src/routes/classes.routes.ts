@@ -5,11 +5,12 @@ import { AuthMiddleware, PaginationParamsMiddleware } from '../middlewares';
 export class ClassesRoutes {
   public static execute(): Router {
     const router = Router();
+    const controller = new ClassesController();
 
     router.get(
       '/',
       [AuthMiddleware.validate, PaginationParamsMiddleware.validate],
-      ClassesController.list,
+      controller.list,
     );
 
     return router;

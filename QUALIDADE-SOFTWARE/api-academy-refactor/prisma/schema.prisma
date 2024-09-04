@@ -105,6 +105,7 @@ model Enrollment {
   student Student @relation(fields: [studentId], references: [id])
   class Class @relation(fields: [classId], references: [id])
 
+  @@unique([studentId, classId])
   @@map("enrollments")
 }
 

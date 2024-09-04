@@ -10,6 +10,7 @@ import {
 export class StudentsRoutes {
   public static execute(): Router {
     const router = Router();
+    const controller = new StudentsController();
 
     router.post(
       '/',
@@ -18,22 +19,14 @@ export class StudentsRoutes {
         CreateStudentMiddleware.validateFieldTypes,
         CreateStudentMiddleware.validateFieldsValue,
       ],
-      StudentsController.create,
+      controller.create,
     );
-    router.get(
-      '/',
-      [PaginationParamsMiddleware.validate],
-      StudentsController.list,
-    );
-    router.get(
-      '/:id',
-      [ValidateIdFormatMiddleware.validate],
-      StudentsController.get,
-    );
+    router.get('/', [PaginationParamsMiddleware.validate], controller.list);
+    router.get('/:id', [ValidateIdFormatMiddleware.validate], controller.get);
     router.delete(
       '/:id',
       [ValidateIdFormatMiddleware.validate],
-      StudentsController.delete,
+      controller.delete,
     );
 
     router.put(
@@ -43,7 +36,7 @@ export class StudentsRoutes {
         UpdateStudentMiddleware.validateFieldTypes,
         UpdateStudentMiddleware.validateFieldsValue,
       ],
-      StudentsController.update,
+      controller.update,
     );
 
     return router;

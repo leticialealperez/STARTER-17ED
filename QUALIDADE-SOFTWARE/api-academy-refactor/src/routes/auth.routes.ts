@@ -5,6 +5,7 @@ import { LoginMiddleware } from '../middlewares';
 export class AuthRoutes {
   public static execute(): Router {
     const router = Router();
+    const controller = new AuthController();
 
     router.post(
       '/login',
@@ -12,7 +13,7 @@ export class AuthRoutes {
         LoginMiddleware.validateMissingFields,
         LoginMiddleware.validateFieldTypes,
       ],
-      AuthController.login,
+      controller.login,
     );
 
     return router;

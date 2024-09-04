@@ -1,47 +1,15 @@
 import { Request, Response } from 'express';
-import { prismaConnection } from '../database/prisma.connection';
-import { Bcrypt } from '../utils/bcrypt.util';
-import { JWT } from '../utils/jwt.util';
+import { HttpError } from '../errors';
+import { AuthService } from '../services';
 
 export class AuthController {
-  public static async login(req: Request, res: Response) {
+  private readonly service = new AuthService();
+
+  public async login(req: Request, res: Response) {
     try {
       const { email, password } = req.body;
 
-      // verificar o email
-      const studentFound = await prismaConnection.student.findUnique({
-        where: {
-          emailAddress: email,
-        },
-      });
-
-      if (!studentFound) {
-        return res.status(401).json({
-          ok: false,
-          message: 'Credencias inválidas',
-        });
-      }
-
-      // verificar se a senha dá match
-      const hash = studentFound.password;
-      const bcrypt = new Bcrypt();
-      const isPasswordMatch = await bcrypt.verify(hash, password);
-
-      if (!isPasswordMatch) {
-        return res.status(401).json({
-          ok: false,
-          message: 'Credencias inválidas',
-        });
-      }
-
-      const jwt = new JWT();
-
-      const token = jwt.generateToken({
-        id: studentFound.id,
-        name: studentFound.name,
-        email: studentFound.emailAddress,
-        type: studentFound.type,
-      });
+      const token = await this.service.loginStudent({ email, password });
 
       return res.status(200).json({
         ok: true,
@@ -49,6 +17,13 @@ export class AuthController {
         data: token,
       });
     } catch (err) {
+      if (err instanceof HttpError) {
+        return res.status(err.statusCode).json({
+          ok: false,
+          message: err.message,
+        });
+      }
+
       return res.status(500).json({
         ok: false,
         message: `Ocorreu um erro inesperado. Erro: ${(err as Error).name} - ${

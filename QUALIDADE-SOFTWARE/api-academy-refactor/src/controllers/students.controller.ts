@@ -1,119 +1,73 @@
 import { Request, Response } from 'express';
-import { prismaConnection } from '../database/prisma.connection';
-import { Bcrypt } from '../utils/bcrypt.util';
+import { HttpError } from '../errors';
+import { StudentService } from '../services';
 
 export class StudentsController {
-  public static async create(req: Request, res: Response) {
+  // propriedade privada e apenas leitura (equivalente à uma const)
+  private readonly service: StudentService = new StudentService();
+
+  public async create(req: Request, res: Response) {
     try {
       const { name, age, document, email, password, type } = req.body;
 
-      // embaralhar a senha antes de salvar no banco de dados
-      const bcrypt = new Bcrypt();
-      const passwordHashed = await bcrypt.generateHash(password);
-
-      const newStudent = await prismaConnection.student.create({
-        data: {
-          name,
-          age,
-          password: passwordHashed,
-          documentIdentification: document,
-          emailAddress: email,
-          type: type,
-        },
+      const student = await this.service.createStudent({
+        age,
+        cpf: document,
+        email,
+        name,
+        password,
+        type,
       });
 
       return res.status(201).json({
         ok: true,
         message: 'Aluno cadastrado com sucesso!',
-        data: newStudent,
+        data: student,
       });
     } catch (err) {
-      return res.status(500).json({
-        ok: false,
-        message: `Ocorreu um erro inesperado. Erro: ${(err as Error).name} - ${
-          (err as Error).message
-        }`,
-      });
+      return this.onError(err, res);
     }
   }
 
-  public static async list(req: Request, res: Response) {
+  public async list(req: Request, res: Response) {
     try {
       let { limit, page } = req.query;
 
-      let limitDefault = 10;
-      let pageDefault = 1;
-
-      if (limit) {
-        limitDefault = Number(limit);
-      }
-
-      if (page) {
-        pageDefault = Number(page);
-      }
-
-      const count = await prismaConnection.student.count({
-        where: {
-          deleted: false,
-        },
-      });
-
-      const students = await prismaConnection.student.findMany({
-        skip: limitDefault * (pageDefault - 1),
-        take: limitDefault,
-        orderBy: {
-          createdAt: 'desc',
-        },
-        where: {
-          deleted: false,
-        },
+      const result = await this.service.listAllStudents({
+        limit: limit ? Number(limit) : undefined,
+        page: page ? Number(page) : undefined,
       });
 
       return res.status(200).json({
         ok: true,
         message: 'Alunos listados com sucesso',
-        data: students,
-        pagination: {
-          limit: limitDefault,
-          page: pageDefault,
-          count: count,
-          totalPages: Math.ceil(count / limitDefault),
-        },
+        data: result.data,
+        pagination: result.pagination,
       });
     } catch (err) {
-      return res.status(500).json({
-        ok: false,
-        message: `Ocorreu um erro inesperado. Erro: ${(err as Error).name} - ${
-          (err as Error).message
-        }`,
-      });
+      return this.onError(err, res);
     }
   }
 
-  public static async get(req: Request, res: Response) {
+  public async get(req: Request, res: Response) {
     try {
       const { id } = req.params;
 
-      const studentFound = await prismaConnection.student.findUnique({
-        where: {
-          id: id,
-          deleted: false,
-        },
-      });
-
-      if (!studentFound) {
-        return res.status(404).json({
-          ok: false,
-          message: 'O aluno não existe na base de dados',
-        });
-      }
+      const student = await this.service.getStudentById(id);
 
       return res.status(200).json({
         ok: true,
         message: 'Aluno encontrado',
-        data: studentFound,
+        data: student,
       });
     } catch (err) {
+      if (err instanceof HttpError) {
+        return res.status(err.statusCode).json({
+          ok: false,
+          message: err.message,
+        });
+      }
+
       return res.status(500).json({
         ok: false,
         message: `Ocorreu um erro inesperado. Erro: ${(err as Error).name} - ${
@@ -123,20 +77,15 @@ export class StudentsController {
     }
   }
 
-  public static async update(req: Request, res: Response) {
+  public async update(req: Request, res: Response) {
     try {
       const { id } = req.params;
       const { name, age } = req.body;
 
-      const studentUpdated = await prismaConnection.student.update({
-        where: {
-          id: id,
-          deleted: false,
-        },
-        data: {
-          name: name,
-          age: age,
-        },
+      const studentUpdated = await this.service.updateStudent({
+        id,
+        age,
+        name,
       });
 
       return res.status(200).json({
@@ -145,23 +94,15 @@ export class StudentsController {
         data: studentUpdated,
       });
     } catch (err) {
-      return res.status(500).json({
-        ok: false,
-        message: `Ocorreu um erro inesperado. Erro: ${(err as Error).name} - ${
-          (err as Error).message
-        }`,
-      });
+      return this.onError(err, res);
     }
   }
 
-  public static async delete(req: Request, res: Response) {
+  public async delete(req: Request, res: Response) {
     try {
       const { id } = req.params;
 
-      const studentDeleted = await prismaConnection.student.update({
-        where: { id: id, deleted: false },
-        data: { deleted: true, deletedAt: new Date() },
-      });
+      const studentDeleted = await this.service.deleteStudent(id);
 
       return res.status(200).json({
         ok: true,
@@ -169,12 +110,24 @@ export class StudentsController {
         data: studentDeleted,
       });
     } catch (err) {
-      return res.status(500).json({
+      return this.onError(err, res);
+    }
+  }
+
+  // Para não precisar ficar repetindo a todo momento este bloco no catch dos métodos
+  private onError(err: unknown, response: Response): Response {
+    if (err instanceof HttpError) {
+      return response.status(err.statusCode).json({
         ok: false,
-        message: `Ocorreu um erro inesperado. Erro: ${(err as Error).name} - ${
-          (err as Error).message
-        }`,
+        message: err.message,
       });
     }
+
+    return response.status(500).json({
+      ok: false,
+      message: `Ocorreu um erro inesperado. Erro: ${(err as Error).name} - ${
+        (err as Error).message
+      }`,
+    });
   }
 }

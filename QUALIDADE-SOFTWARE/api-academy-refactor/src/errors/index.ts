@@ -1,2 +1,2 @@
-export * from './custom.error';
 export * from './error-notification';
+export * from './http.error';

@@ -23,7 +23,7 @@ app.get('/', (_, res) => {
 });
 
 app.use('/docs', swaggerUI.serve);
-app.get('/docs', swaggerUI.setup(swaggerDoc)); // UI
+app.get('/docs', swaggerUI.setup(swaggerDoc));
 
 app.use('/students', StudentsRoutes.execute());
 app.use('/auth', AuthRoutes.execute());

@@ -41,7 +41,7 @@ export class CreateAssessmentMiddleware {
     res: Response,
     next: NextFunction,
   ) {
-    const { title, rate, deadline, studentId } = req.body;
+    const { title, rate, deadline } = req.body;
 
     const notifications: Array<ErrorNotification> = [];
 

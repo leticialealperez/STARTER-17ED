@@ -9,6 +9,7 @@ import {
 export class EnrollmentsRoutes {
   public static execute(): Router {
     const router = Router();
+    const controller = new EnrollmentsController();
 
     router.post(
       '/',
@@ -18,13 +19,13 @@ export class EnrollmentsRoutes {
         CreateEnrollmentMiddleware.validateFieldTypes,
         CreateEnrollmentMiddleware.validateFieldsValue,
       ],
-      EnrollmentsController.create,
+      controller.create,
     );
 
     router.get(
       '/',
       [AuthMiddleware.validate, PaginationParamsMiddleware.validate],
-      EnrollmentsController.list,
+      controller.list,
     );
 
     return router;
