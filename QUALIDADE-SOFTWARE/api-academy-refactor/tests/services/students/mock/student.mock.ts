@@ -14,8 +14,8 @@ export class StudentMock {
       password: 'top_secret_hash',
       type: type ?? 'T',
       deleted: false,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: new Date().toISOString() as unknown as Date,
+      updatedAt: new Date().toISOString() as unknown as Date,
       deletedAt: null,
     };
   }

@@ -137,7 +137,7 @@ export class CreateStudentMiddleware {
     }
 
     const studentTypes = ['T', 'F', 'M'];
-    const isMatch = studentTypes.some(type);
+    const isMatch = studentTypes.includes(type);
 
     if (!isMatch) {
       notifications.push({

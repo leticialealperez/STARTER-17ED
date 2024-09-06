@@ -84,7 +84,7 @@ export class CreateAssessmentMiddleware {
       });
     }
 
-    if (rate >= 0 && rate <= 10) {
+    if (rate < 0 || rate > 10) {
       notifications.push({
         field: 'rate',
         message: 'A nota deve ser um valor númerico entre 0 e 10',

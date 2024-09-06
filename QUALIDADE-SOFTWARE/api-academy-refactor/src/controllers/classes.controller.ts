@@ -1,16 +1,15 @@
 import { Request, Response } from 'express';
-import { HttpError } from '../errors';
 import { ClassService } from '../services';
+import { onError } from '../utils';
 
 export class ClassesController {
-  private readonly service = new ClassService();
-
   public async list(req: Request, res: Response) {
     try {
       let { limit, page } = req.query;
       const { student } = req.body;
 
-      const result = await this.service.listAllClasses({
+      const service = new ClassService();
+      const result = await service.listAllClasses({
         studentLogged: student,
         limit: limit ? Number(limit) : undefined,
         page: page ? Number(page) : undefined,
@@ -23,19 +22,7 @@ export class ClassesController {
         pagination: result.pagination,
       });
     } catch (err) {
-      if (err instanceof HttpError) {
-        return res.status(err.statusCode).json({
-          ok: false,
-          message: err.message,
-        });
-      }
-
-      return res.status(500).json({
-        ok: false,
-        message: `Ocorreu um erro inesperado. Erro: ${(err as Error).name} - ${
-          (err as Error).message
-        }`,
-      });
+      return onError(err, res);
     }
   }
 }

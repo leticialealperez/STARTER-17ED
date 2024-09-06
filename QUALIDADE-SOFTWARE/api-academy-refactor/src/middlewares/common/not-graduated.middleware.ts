@@ -6,9 +6,9 @@ export class NotGraduatedMiddleware {
     const { student } = req.body;
 
     if (student.type === StudentType.F) {
-      return res.status(400).json({
+      return res.status(401).json({
         ok: false,
-        message: 'Recurso indisponível para aluno Formado',
+        message: 'Recurso indisponível para um aluno Formado',
       });
     }
 

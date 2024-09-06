@@ -1,16 +1,15 @@
 import { Request, Response } from 'express';
 import { HttpError } from '../errors';
 import { StudentService } from '../services';
+import { onError } from '../utils';
 
 export class StudentsController {
-  // propriedade privada e apenas leitura (equivalente à uma const)
-  private readonly service: StudentService = new StudentService();
-
   public async create(req: Request, res: Response) {
     try {
       const { name, age, document, email, password, type } = req.body;
 
-      const student = await this.service.createStudent({
+      const service = new StudentService();
+      const student = await service.createStudent({
         age,
         cpf: document,
         email,
@@ -25,7 +24,7 @@ export class StudentsController {
         data: student,
       });
     } catch (err) {
-      return this.onError(err, res);
+      return onError(err, res);
     }
   }
 
@@ -33,7 +32,8 @@ export class StudentsController {
     try {
       let { limit, page } = req.query;
 
-      const result = await this.service.listAllStudents({
+      const service = new StudentService();
+      const result = await service.listAllStudents({
         limit: limit ? Number(limit) : undefined,
         page: page ? Number(page) : undefined,
       });
@@ -45,7 +45,7 @@ export class StudentsController {
         pagination: result.pagination,
       });
     } catch (err) {
-      return this.onError(err, res);
+      return onError(err, res);
     }
   }
 
@@ -53,7 +53,8 @@ export class StudentsController {
     try {
       const { id } = req.params;
 
-      const student = await this.service.getStudentById(id);
+      const service = new StudentService();
+      const student = await service.getStudentById(id);
 
       return res.status(200).json({
         ok: true,
@@ -82,7 +83,8 @@ export class StudentsController {
       const { id } = req.params;
       const { name, age } = req.body;
 
-      const studentUpdated = await this.service.updateStudent({
+      const service = new StudentService();
+      const studentUpdated = await service.updateStudent({
         id,
         age,
         name,
@@ -90,11 +92,11 @@ export class StudentsController {
 
       return res.status(200).json({
         ok: true,
-        message: 'Aluno atualizado',
+        message: 'Aluno atualizado com sucesso',
         data: studentUpdated,
       });
     } catch (err) {
-      return this.onError(err, res);
+      return onError(err, res);
     }
   }
 
@@ -102,7 +104,8 @@ export class StudentsController {
     try {
       const { id } = req.params;
 
-      const studentDeleted = await this.service.deleteStudent(id);
+      const service = new StudentService();
+      const studentDeleted = await service.deleteStudent(id);
 
       return res.status(200).json({
         ok: true,
@@ -110,24 +113,7 @@ export class StudentsController {
         data: studentDeleted,
       });
     } catch (err) {
-      return this.onError(err, res);
+      return onError(err, res);
     }
-  }
-
-  // Para não precisar ficar repetindo a todo momento este bloco no catch dos métodos
-  private onError(err: unknown, response: Response): Response {
-    if (err instanceof HttpError) {
-      return response.status(err.statusCode).json({
-        ok: false,
-        message: err.message,
-      });
-    }
-
-    return response.status(500).json({
-      ok: false,
-      message: `Ocorreu um erro inesperado. Erro: ${(err as Error).name} - ${
-        (err as Error).message
-      }`,
-    });
   }
 }
