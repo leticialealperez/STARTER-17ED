@@ -99,7 +99,9 @@
         }
       },
       "post": {
-        "tags": ["Students"],
+        "tags": [
+          "Students"
+        ],
         "summary": "Cadastra um novo aluno",
         "requestBody": {
           "description": "Uma descrição daora",
@@ -126,10 +128,21 @@
                   },
                   "type": {
                     "type": "string",
-                    "enum": ["F", "M", "T"]
+                    "enum": [
+                      "F",
+                      "M",
+                      "T"
+                    ]
                   }
                 },
-                "required": ["name", "age", "document", "email", "password", "type"]
+                "required": [
+                  "name",
+                  "age",
+                  "document",
+                  "email",
+                  "password",
+                  "type"
+                ]
               }
             }
           }
@@ -176,11 +189,15 @@
             }
           }
         }
-
       }
     },
     "/students/{id}": {
       "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "tags": [
           "Students"
         ],
@@ -340,9 +357,13 @@
           }
         ]
       }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
     }
-  },
-  "security": [
-    "basicAuth"
-  ]
+  }
 }
